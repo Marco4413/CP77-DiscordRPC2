@@ -1,4 +1,4 @@
-## Cyberpunk2077RPC2
+## Cyberpunk2077 - DiscordRPC 2
 
 ## About
 
