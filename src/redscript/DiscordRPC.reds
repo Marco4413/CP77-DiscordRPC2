@@ -1,4 +1,4 @@
-module io.github.marco4413.cp77rpc2
+module CP77RPC2
 
 public native class DiscordRPC {
     public native static func GetTime() -> Uint64;

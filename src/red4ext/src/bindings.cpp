@@ -3,7 +3,7 @@
 
 #include <chrono>
 
-RED4ext::TTypedClass<CP77RPC2::DiscordRPC> g_DiscordRPCClass("io.github.marco4413.cp77rpc2.DiscordRPC");
+RED4ext::TTypedClass<CP77RPC2::DiscordRPC> g_DiscordRPCClass("CP77RPC2.DiscordRPC");
 
 void CP77RPC2::DiscordRPC_GetTime(RED4ext::IScriptable* aContext, RED4ext::CStackFrame* aFrame, uint64_t* aOut, int64_t a4)
 {

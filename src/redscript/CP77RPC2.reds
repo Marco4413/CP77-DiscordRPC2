@@ -1,4 +1,4 @@
-module io.github.marco4413.cp77rpc2
+module CP77RPC2
 
 public class CP77RPC2 extends ScriptableSystem {
     private let m_Initialized: Bool = false;
