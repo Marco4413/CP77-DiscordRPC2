@@ -5,9 +5,7 @@
 **This is a Cyberpunk 2077 mod which adds Discord Rich Presence to the game!**
 
 I had already made a mod which claimed to do the same thing, but it used CET and an external application (not convenient).
-
-I plan to get all features from the previous version up and running within this new one. However, it will take some time.
-**Though once feature parity is reached, I'll release this version on Nexusmods!**
+This new version is self-contained!
 
 ### Requirements
 
@@ -17,7 +15,7 @@ I plan to get all features from the previous version up and running within this 
 
 ### Credits
 
-**Thanks to all contributors of RED4ext and redscript for developing those projects, and to the
+**Thanks to all contributors of RED4ext, redscript and CyberEngineTweaks for developing those projects, and to the
 people from the Cyberpunk 2077 Modding Community Discord Server for helping me understand some parts
 of RED4ext and redscript, I truly appreciate it!**
 
