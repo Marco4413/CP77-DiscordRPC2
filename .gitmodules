@@ -1,3 +1,6 @@
 [submodule "libs/RED4ext.SDK"]
 	path = src/red4ext/libs/RED4ext.SDK
 	url = https://github.com/WopsS/RED4ext.SDK
+[submodule "src/cet/libs/cp2077-cet-kit"]
+	path = src/cet/libs/cp2077-cet-kit
+	url = https://github.com/psiberx/cp2077-cet-kit

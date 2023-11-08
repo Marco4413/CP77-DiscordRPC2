@@ -13,6 +13,7 @@ I plan to get all features from the previous version up and running within this 
 
 - [RED4ext 1.18+](https://github.com/WopsS/RED4ext)
 - [redscript 0.5.16+](https://github.com/jac3km4/redscript)
+- [CET 1.28+](https://github.com/yamashi/CyberEngineTweaks)
 
 ### Credits
 
