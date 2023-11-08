@@ -35,8 +35,10 @@ void _RunCallbacks()
 
 void CP77RPC2::Discord::Start()
 {
-    if (g_ThreadRunning || g_Thread)
+    if (g_ThreadRunning)
         return;
+    else if (g_Thread)
+        g_Thread->join();
     g_Thread = std::make_unique<std::thread>(_RunCallbacks);
 }
 
