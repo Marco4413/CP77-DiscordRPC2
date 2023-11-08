@@ -67,6 +67,7 @@ bool CP77RPC2::Discord::UpdateActivity(const CP77RPC2::REDDiscordActivity& redAc
             g_CoreMutex.unlock();
             return false;
         }
+        g_AppId = redActivity.ApplicationId;
     }
     
     discord::Activity dActivity{};
