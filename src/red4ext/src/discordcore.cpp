@@ -35,18 +35,18 @@ void _RunCallbacks()
 
 void CP77RPC2::Discord::Start()
 {
-    std::lock_guard lock(g_CoreMutex);
-    if (g_ThreadRunning)
+    if (g_ThreadRunning || g_Thread)
         return;
     g_Thread = std::make_unique<std::thread>(_RunCallbacks);
 }
 
 void CP77RPC2::Discord::Stop()
 {
-    std::lock_guard lock(g_CoreMutex);
     g_ThreadRunning = false;
-    if (g_Thread)
+    if (g_Thread) {
         g_Thread->join();
+        g_Thread = nullptr;
+    }
 }
 
 bool CP77RPC2::Discord::UpdateActivity(const CP77RPC2::REDDiscordActivity& redActivity, bool block)
