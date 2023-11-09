@@ -40,8 +40,8 @@ function GameUtils.GetLevel(player)
     if not player then return { level = -1, streetCred = -1 }; end
     local statsSystem = Game.GetStatsSystem()
     local playerEntityId = player:GetEntityID()
-    local level = statsSystem:GetStatValue(playerEntityId, "Level")
-    local streetCred = statsSystem:GetStatValue(playerEntityId, "StreetCred")
+    local level = statsSystem:GetStatValue(playerEntityId, gamedataStatType.Level)
+    local streetCred = statsSystem:GetStatValue(playerEntityId, gamedataStatType.StreetCred)
     return { level = level or -1, streetCred = streetCred or -1 }
 end
 
