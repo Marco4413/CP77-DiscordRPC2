@@ -130,17 +130,33 @@ end
 function Handlers.Playing(self, activity)
     if self.gameState == self.GameStates.Playing and self.player then
         local questInfo = GameUtils.GetActiveQuest()
-        if not questInfo.objective then questInfo.objective = ""; end
+        if questInfo.name then
+            if not questInfo.objective then questInfo.objective = ""; end
+            activity.Details = self.Localization:GetFormatted("Playing.Details", questInfo)
+            activity.State = self.Localization:GetFormatted("Playing.State", questInfo)
+        else
+            local district = GameUtils.GetDistrict()
+            if district.main then
+                if district.sub then
+                    activity.Details = self.Localization:GetFormatted("Playing.Details.RoamingSubDistrict", district)
+                    activity.State = self.Localization:GetFormatted("Playing.State.RoamingSubDistrict", district)
+                else
+                    activity.Details = self.Localization:GetFormatted("Playing.Details.RoamingDistrict", district)
+                    activity.State = self.Localization:GetFormatted("Playing.State.RoamingDistrict", district)
+                end
+            else
+                activity.Details = self.Localization:Get("Playing.Details.Roaming")
+                activity.State = self.Localization:Get("Playing.State.Roaming")
+            end
+        end
 
         local level = GameUtils.GetLevel(self.player)
         local lifepath = GameUtils.GetLifePath(self.player)
 
-        activity.Details = self.Localization:GetFormatted("Playing.Details", questInfo)
         activity.LargeImageKey = GameUtils.GetGender(self.player):lower()
         activity.LargeImageText = self.Localization:GetFormatted("Playing.LargeImageText", level)
         activity.SmallImageKey = lifepath:lower()
         activity.SmallImageText = self.Localization:GetFormatted("Playing.SmallImageText", { lifepath = lifepath })
-        activity.State = self.Localization:GetFormatted("Playing.State", questInfo)
         return true
     end
 end

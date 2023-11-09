@@ -67,7 +67,7 @@ function GameUtils.GetWeaponName(weapon)
 end
 
 function GameUtils.GetActiveQuest()
-    local res = { name = "Roaming.", objective = nil }
+    local res = { name = nil, objective = nil }
     local journal = Game.GetJournalManager()
 
     -- Game Dump:
@@ -98,6 +98,27 @@ function GameUtils.GetGender(player)
     if not player then return nil; end
     local genderName = player:GetResolvedGenderName()
     return genderName and genderName.value or nil
+end
+
+function GameUtils.GetDistrict()
+    local preventionSystem = Game.GetScriptableSystemsContainer():Get("PreventionSystem")
+    local districtManager = preventionSystem.districtManager
+    if not districtManager then return {}; end
+
+    local currentDistrict = districtManager:GetCurrentDistrict()
+    if not currentDistrict then return {}; end
+    
+    local cdRecord = currentDistrict:GetDistrictRecord()
+    local pdRecord = cdRecord:ParentDistrict()
+
+    if pdRecord then
+        return {
+            main = GetLocalizedText(pdRecord:LocalizedName()),
+            sub = GetLocalizedText(cdRecord:LocalizedName())
+        }
+    end
+
+    return { main = GetLocalizedText(cdRecord:LocalizedName()) }
 end
 
 return GameUtils
