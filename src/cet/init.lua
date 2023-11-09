@@ -242,6 +242,10 @@ local function Event_OnDraw()
         if ImGui.Button(Localization:Get("UI.Config.Reset")) then
             CP77RPC2:ResetConfig()
         end
+        ImGui.SameLine()
+        if ImGui.Button(Localization:Get("UI.Config.ForceUpdate")) then
+            CP77RPC2.elapsedInterval = CP77RPC2.submitInterval + 1
+        end
 
         ImGui.Separator()
         CP77RPC2.enabled = ImGui.Checkbox(Localization:Get("UI.Config.Enabled"), CP77RPC2.enabled)

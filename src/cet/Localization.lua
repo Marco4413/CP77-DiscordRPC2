@@ -51,6 +51,7 @@ local Localization = {
         ["UI.Config.Save"] = "Save",
         ["UI.Config.Load"] = "Load",
         ["UI.Config.Reset"] = "Reset",
+        ["UI.Config.ForceUpdate"] = "Force Update",
         ["UI.Config.Enabled"] = "Enabled",
         ["UI.Config.SubmitInterval"] = "Submit Interval",
         ["UI.Config.ShowDrivingActivity"] = "Show Driving Activity",
