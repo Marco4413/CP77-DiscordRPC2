@@ -129,12 +129,19 @@ end
 ---@param activity Activity
 function Handlers.Playing(self, activity)
     if self.gameState == self.GameStates.Playing and self.player then
-        local questInfo = GameUtils.GetActiveQuest()
-        if questInfo.name then
-            if not questInfo.objective then questInfo.objective = ""; end
-            activity.Details = self.Localization:GetFormatted("Playing.Details", questInfo)
-            activity.State = self.Localization:GetFormatted("Playing.State", questInfo)
-        else
+        local questShown = false
+        if self.showQuest then
+            local questInfo = GameUtils.GetActiveQuest()
+            if questInfo.name then
+                questShown = true
+                if not (self.showQuestObjective and questInfo.objective) then questInfo.objective = ""; end
+                activity.Details = self.Localization:GetFormatted("Playing.Details", questInfo)
+                activity.State = self.Localization:GetFormatted("Playing.State", questInfo)
+            end
+        end
+
+        
+        if not questShown then
             local district = GameUtils.GetDistrict()
             if district.main then
                 if district.sub then

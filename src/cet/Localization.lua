@@ -60,6 +60,8 @@ local Localization = {
         ["UI.Config.ForceUpdate"] = "Force Update",
         ["UI.Config.Enabled"] = "Enabled",
         ["UI.Config.SubmitInterval"] = "Submit Interval",
+        ["UI.Config.ShowQuest"] = "Show Quest",
+        ["UI.Config.ShowQuestObjective"] = "Show Quest Objective",
         ["UI.Config.ShowDrivingActivity"] = "Show Driving Activity",
         ["UI.Config.ShowCombatActivity"] = "Show Combat Activity"
     }

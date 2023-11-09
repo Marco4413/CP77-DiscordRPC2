@@ -47,6 +47,8 @@ local CP77RPC2 = {
     showUI = false,
     enabled = true,
     submitInterval = 1,
+    showQuest = true,
+    showQuestObjective = false,
     showDrivingActivity = false,
     showCombatActivity = false,
     ---@type Activity|nil
@@ -83,6 +85,8 @@ end
 function CP77RPC2:ResetConfig()
     self.enabled = true
     self.submitInterval = 5
+    self.showQuest = true
+    self.showQuestObjective = false
     self.showDrivingActivity = false
     self.showCombatActivity = false
 end
@@ -92,6 +96,8 @@ function CP77RPC2:SaveConfig()
     file:write(json.encode({
         enabled = self.enabled,
         submitInterval = self.submitInterval,
+        showQuest = self.showQuest,
+        showQuestObjective = self.showQuestObjective,
         showDrivingActivity = self.showDrivingActivity,
         showCombatActivity = self.showCombatActivity,
     }))
@@ -111,6 +117,14 @@ function CP77RPC2:LoadConfig()
 
         if type(config.submitInterval) == "number" then
             self.submitInterval = config.submitInterval
+        end
+
+        if type(config.showQuest) == "boolean" then
+            self.showQuest = config.showQuest
+        end
+
+        if type(config.showQuestObjective) == "boolean" then
+            self.showQuestObjective = config.showQuestObjective
         end
 
         if type(config.showDrivingActivity) == "boolean" then
@@ -258,6 +272,11 @@ local function Event_OnDraw()
             if changed then
                 CP77RPC2.submitInterval = math.max(newValue, 1)
             end
+        end
+
+        CP77RPC2.showQuest = ImGui.Checkbox(Localization:Get("UI.Config.ShowQuest"), CP77RPC2.showQuest)
+        if CP77RPC2.showQuest then
+            CP77RPC2.showQuestObjective = ImGui.Checkbox(Localization:Get("UI.Config.ShowQuestObjective"), CP77RPC2.showQuestObjective)
         end
 
         CP77RPC2.showDrivingActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowDrivingActivity"), CP77RPC2.showDrivingActivity)
