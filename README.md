@@ -7,6 +7,15 @@
 I had already made a mod which claimed to do the same thing, but it used CET and an external application (not convenient).
 This new version is self-contained!
 
+### Features
+- Large image based on character gender.
+- Small image based on lifepath.
+- Level and Street Cred shown when hovering the large image.
+- Quest and Objective tracking (optional).
+- Driving activity (optional).
+- Combat activity (optional).
+- Roaming activity (no quest selected) showing what district the player is in.
+
 ### Requirements
 
 - [RED4ext 1.18+](https://github.com/WopsS/RED4ext)
