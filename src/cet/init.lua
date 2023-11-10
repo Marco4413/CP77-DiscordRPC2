@@ -47,6 +47,7 @@ local CP77RPC2 = {
     showUI = false,
     enabled = true,
     submitInterval = 1,
+    style = "",
     showQuest = true,
     showQuestObjective = false,
     showDrivingActivity = false,
@@ -85,6 +86,7 @@ end
 function CP77RPC2:ResetConfig()
     self.enabled = true
     self.submitInterval = 5
+    self.style = ""
     self.showQuest = true
     self.showQuestObjective = false
     self.showDrivingActivity = false
@@ -96,6 +98,7 @@ function CP77RPC2:SaveConfig()
     file:write(json.encode({
         enabled = self.enabled,
         submitInterval = self.submitInterval,
+        style = self.style,
         showQuest = self.showQuest,
         showQuestObjective = self.showQuestObjective,
         showDrivingActivity = self.showDrivingActivity,
@@ -117,6 +120,10 @@ function CP77RPC2:LoadConfig()
 
         if type(config.submitInterval) == "number" then
             self.submitInterval = config.submitInterval
+        end
+
+        if type(config.style) == "string" then
+            self.style = config.style
         end
 
         if type(config.showQuest) == "boolean" then
@@ -163,6 +170,10 @@ function CP77RPC2:RemoveActivityHandler(handler)
             break
         end
     end
+end
+
+function CP77RPC2:GetGenderImageKey(gender)
+    return self.style == "PL" and table.concat{gender:lower(),"-pl"} or gender:lower()
 end
 
 local function Event_OnInit()
@@ -272,6 +283,12 @@ local function Event_OnDraw()
             if changed then
                 CP77RPC2.submitInterval = math.max(newValue, 1)
             end
+        end
+
+        if ImGui.Checkbox(Localization:Get("UI.Config.PLStyle"), CP77RPC2.style == "PL") then
+            CP77RPC2.style = "PL"
+        else
+            CP77RPC2.style = ""
         end
 
         CP77RPC2.showQuest = ImGui.Checkbox(Localization:Get("UI.Config.ShowQuest"), CP77RPC2.showQuest)
