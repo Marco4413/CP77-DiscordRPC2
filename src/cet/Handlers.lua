@@ -56,7 +56,12 @@ function Handlers.PauseMenu(self, activity)
         activity.LargeImageKey = self:GetGenderImageKey(GameUtils.GetGender(self.player))
         activity.LargeImageText = self.Localization:GetFormatted("PauseMenu.LargeImageText", level)
         activity.SmallImageKey = lifepath:lower()
-        activity.SmallImageText = self.Localization:GetFormatted("PauseMenu.SmallImageText", { lifepath = lifepath })
+        if self.showPlaythroughTime and self.playthroughTime then
+            activity.SmallImageText = self.Localization:GetFormatted(
+                "PauseMenu.SmallImageText.WPlaythroughTime", { lifepath = lifepath, playthroughTime = math.floor(self.playthroughTime / 3600) })
+        else
+            activity.SmallImageText = self.Localization:GetFormatted("PauseMenu.SmallImageText", { lifepath = lifepath })
+        end
         activity.State = ""
         return true
     end
@@ -87,7 +92,12 @@ function Handlers.Combat(self, activity)
         activity.LargeImageKey = self:GetGenderImageKey(GameUtils.GetGender(self.player))
         activity.LargeImageText = self.Localization:GetFormatted("Combat.LargeImageText", level)
         activity.SmallImageKey = lifepath:lower()
-        activity.SmallImageText = self.Localization:GetFormatted("Combat.SmallImageText", { lifepath = lifepath })
+        if self.showPlaythroughTime and self.playthroughTime then
+            activity.SmallImageText = self.Localization:GetFormatted(
+                "Combat.SmallImageText.WPlaythroughTime", { lifepath = lifepath, playthroughTime = math.floor(self.playthroughTime / 3600) })
+        else
+            activity.SmallImageText = self.Localization:GetFormatted("Combat.SmallImageText", { lifepath = lifepath })
+        end
         activity.State = weaponName and
             self.Localization:GetFormatted("Combat.State.Weapon", { weapon = weaponName }) or
             self.Localization:Get("Combat.State.NoWeapon")
@@ -111,7 +121,12 @@ function Handlers.Driving(self, activity)
             activity.LargeImageKey = self:GetGenderImageKey(GameUtils.GetGender(self.player))
             activity.LargeImageText = self.Localization:GetFormatted("Driving.LargeImageText", level)
             activity.SmallImageKey = lifepath:lower()
-            activity.SmallImageText = self.Localization:GetFormatted("Driving.SmallImageText", { lifepath = lifepath })
+            if self.showPlaythroughTime and self.playthroughTime then
+                activity.SmallImageText = self.Localization:GetFormatted(
+                    "Driving.SmallImageText.WPlaythroughTime", { lifepath = lifepath, playthroughTime = math.floor(self.playthroughTime / 3600) })
+            else
+                activity.SmallImageText = self.Localization:GetFormatted("Driving.SmallImageText", { lifepath = lifepath })
+            end
 
             if vehicleSpeed > 0 then
                 activity.State = self.Localization:GetFormatted("Driving.State.Forward", { speed = vehicleSpeed })
@@ -163,7 +178,12 @@ function Handlers.Playing(self, activity)
         activity.LargeImageKey = self:GetGenderImageKey(GameUtils.GetGender(self.player))
         activity.LargeImageText = self.Localization:GetFormatted("Playing.LargeImageText", level)
         activity.SmallImageKey = lifepath:lower()
-        activity.SmallImageText = self.Localization:GetFormatted("Playing.SmallImageText", { lifepath = lifepath })
+        if self.showPlaythroughTime and self.playthroughTime then
+            activity.SmallImageText = self.Localization:GetFormatted(
+                "Playing.SmallImageText.WPlaythroughTime", { lifepath = lifepath, playthroughTime = math.floor(self.playthroughTime / 3600) })
+        else
+            activity.SmallImageText = self.Localization:GetFormatted("Playing.SmallImageText", { lifepath = lifepath })
+        end
         return true
     end
 end

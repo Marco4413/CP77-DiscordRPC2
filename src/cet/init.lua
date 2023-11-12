@@ -43,6 +43,8 @@ local CP77RPC2 = {
     player = nil,
     gameState = GameStates.MainMenu,
     startedAt = 0,
+    ---@type number|nil
+    playthroughTime = nil, -- Available on save load
     elapsedInterval = 0,
     showUI = false,
     enabled = true,
@@ -52,6 +54,7 @@ local CP77RPC2 = {
     showQuestObjective = false,
     showDrivingActivity = false,
     showCombatActivity = false,
+    showPlaythroughTime = false,
     ---@type Activity|nil
     activity = nil,
     GameStates = GameStates,
@@ -91,6 +94,7 @@ function CP77RPC2:ResetConfig()
     self.showQuestObjective = false
     self.showDrivingActivity = false
     self.showCombatActivity = false
+    self.showPlaythroughTime = false
 end
 
 function CP77RPC2:SaveConfig()
@@ -103,6 +107,7 @@ function CP77RPC2:SaveConfig()
         showQuestObjective = self.showQuestObjective,
         showDrivingActivity = self.showDrivingActivity,
         showCombatActivity = self.showCombatActivity,
+        showPlaythroughTime = self.showPlaythroughTime,
     }))
     io.close(file)
 end
@@ -140,6 +145,10 @@ function CP77RPC2:LoadConfig()
 
         if type(config.showCombatActivity) == "boolean" then
             self.showCombatActivity = config.showCombatActivity
+        end
+
+        if type(config.showPlaythroughTime) == "boolean" then
+            self.showPlaythroughTime = config.showPlaythroughTime
         end
     end)
     
@@ -181,6 +190,32 @@ local function Event_OnInit()
     CP77RPC2:LoadConfig()
 
     CP77RPC2.startedAt = os.time() * 1e3
+
+    ObserveAfter("MenuScenario_SingleplayerMenu", "OnEnterScenario", function ()
+        local metadata = Game.GetSystemRequestsHandler():GetLatestSaveMetadata()
+        if metadata then
+            CP77RPC2.playthroughTime = metadata.playthroughTime
+            return
+        end
+        CP77RPC2.playthroughTime = nil
+    end)
+
+    ObserveAfter("gsmBaseRequestsHandler", "LoadLastCheckpoint", function (handler)
+        local metadata = handler:GetLatestSaveMetadata()
+        if metadata then
+            CP77RPC2.playthroughTime = metadata.playthroughTime
+            return
+        end
+        CP77RPC2.playthroughTime = nil
+    end)
+
+    ObserveAfter("LoadGameMenuGameController", "LoadGame", function (controller, item)
+        if item.metadata then
+            CP77RPC2.playthroughTime = item.metadata.playthroughTime
+            return
+        end
+        CP77RPC2.playthroughTime = nil
+    end)
 
     GameUI.OnSessionStart(function (state)
         CP77RPC2.gameState = GameStates.Playing
@@ -298,6 +333,7 @@ local function Event_OnDraw()
 
         CP77RPC2.showDrivingActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowDrivingActivity"), CP77RPC2.showDrivingActivity)
         CP77RPC2.showCombatActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowCombatActivity"), CP77RPC2.showCombatActivity)
+        CP77RPC2.showPlaythroughTime = ImGui.Checkbox(Localization:Get("UI.Config.ShowPlaythroughTime"), CP77RPC2.showPlaythroughTime)
         ImGui.Separator()
     end
     ImGui.End()

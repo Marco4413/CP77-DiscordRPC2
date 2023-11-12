@@ -31,16 +31,19 @@ local Localization = {
         ["PauseMenu.Details"] = "Game Paused.",
         ["PauseMenu.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
         ["PauseMenu.SmallImageText"] = "{lifepath}",
+        ["PauseMenu.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
         ["DeathMenu.Details"] = "Admiring the Death Menu.",
         ["DeathMenu.State"] = "No Armor?",
         ["Combat.Details"] = "Fighting with {health}/{maxHealth}HP",
         ["Combat.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
         ["Combat.SmallImageText"] = "{lifepath}",
+        ["Combat.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
         ["Combat.State.Weapon"] = "Using {weapon}",
         ["Combat.State.NoWeapon"] = "No weapon equipped.",
         ["Driving.Details"] = "Driving {vehicle}",
         ["Driving.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
         ["Driving.SmallImageText"] = "{lifepath}",
+        ["Driving.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
         ["Driving.State.Forward"] = "Cruising at {speed}km/h",
         ["Driving.State.Backwards"] = "Going backwards at {speed}km/h",
         ["Driving.State.Parked"] = "Currently parked.",
@@ -50,6 +53,7 @@ local Localization = {
         ["Playing.Details.RoamingSubDistrict"] = "Roaming in {sub},",
         ["Playing.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
         ["Playing.SmallImageText"] = "{lifepath}",
+        ["Playing.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
         ["Playing.State"] = "{objective}",
         ["Playing.State.Roaming"] = "",
         ["Playing.State.RoamingDistrict"] = "",
@@ -64,7 +68,8 @@ local Localization = {
         ["UI.Config.ShowQuest"] = "Show Quest",
         ["UI.Config.ShowQuestObjective"] = "Show Quest Objective",
         ["UI.Config.ShowDrivingActivity"] = "Show Driving Activity",
-        ["UI.Config.ShowCombatActivity"] = "Show Combat Activity"
+        ["UI.Config.ShowCombatActivity"] = "Show Combat Activity",
+        ["UI.Config.ShowPlaythroughTime"] = "Show Playthrough Time [EXPERIMENTAL]"
     }
 }
 
