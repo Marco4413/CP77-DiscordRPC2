@@ -90,6 +90,7 @@ function CP77RPC2:ResetConfig()
     self.enabled = true
     self.submitInterval = 5
     self.style = ""
+    Localization:SetLocale("en")
     self.showQuest = true
     self.showQuestObjective = false
     self.showDrivingActivity = false
@@ -103,6 +104,7 @@ function CP77RPC2:SaveConfig()
         enabled = self.enabled,
         submitInterval = self.submitInterval,
         style = self.style,
+        locale = Localization:GetCurrentLocale().name,
         showQuest = self.showQuest,
         showQuestObjective = self.showQuestObjective,
         showDrivingActivity = self.showDrivingActivity,
@@ -129,6 +131,12 @@ function CP77RPC2:LoadConfig()
 
         if type(config.style) == "string" then
             self.style = config.style
+        end
+
+        if type(config.locale) == "string" then
+            if not Localization:SetLocale(config.locale) then
+                ConsoleLog("Couldn't set '", config.locale, "' as main locale.")
+            end
         end
 
         if type(config.showQuest) == "boolean" then
@@ -325,6 +333,26 @@ local function Event_OnDraw()
         else
             CP77RPC2.style = ""
         end
+
+        local currentLocale = Localization:GetCurrentLocale()
+        if ImGui.BeginCombo("Language", currentLocale.displayName) then
+            local locales = Localization:GetLocales()
+        
+            for _, locale in next, locales do
+                local selected = locale.name == currentLocale.name
+                if ImGui.Selectable(locale.displayName, selected) and not selected then
+                    Localization:SetLocale(locale.name)
+                end
+            end
+        
+            ImGui.EndCombo()
+        end
+
+        ImGui.TextWrapped(table.concat {
+            "Languages will not translate this text and the \"Language\" selection menu.",
+            " So, if you change language by mistake, you can still navigate the UI properly to revert the change.",
+            " Languages SHOULD NOT translate any part of the UI (albeit they could)."
+        })
 
         CP77RPC2.showQuest = ImGui.Checkbox(Localization:Get("UI.Config.ShowQuest"), CP77RPC2.showQuest)
         if CP77RPC2.showQuest then

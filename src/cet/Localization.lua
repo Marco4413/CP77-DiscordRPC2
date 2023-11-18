@@ -24,54 +24,44 @@ OTHER DEALINGS IN THE SOFTWARE.
 ]]
 
 local Localization = {
-    locale = {
-        ["Default.LargeImageText"] = "Cyberpunk 2077",
-        ["Loading.Details"] = "Loading...",
-        ["MainMenu.Details"] = "Watching the Main Menu.",
-        ["PauseMenu.Details"] = "Game Paused.",
-        ["PauseMenu.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
-        ["PauseMenu.SmallImageText"] = "{lifepath}",
-        ["PauseMenu.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
-        ["DeathMenu.Details"] = "Admiring the Death Menu.",
-        ["DeathMenu.State"] = "No Armor?",
-        ["Combat.Details"] = "Fighting with {health}/{maxHealth}HP",
-        ["Combat.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
-        ["Combat.SmallImageText"] = "{lifepath}",
-        ["Combat.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
-        ["Combat.State.Weapon"] = "Using {weapon}",
-        ["Combat.State.NoWeapon"] = "No weapon equipped.",
-        ["Driving.Details"] = "Driving {vehicle}",
-        ["Driving.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
-        ["Driving.SmallImageText"] = "{lifepath}",
-        ["Driving.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
-        ["Driving.State.Forward"] = "Cruising at {speed}km/h",
-        ["Driving.State.Backwards"] = "Going backwards at {speed}km/h",
-        ["Driving.State.Parked"] = "Currently parked.",
-        ["Playing.Details"] = "Playing {name}",
-        ["Playing.Details.Roaming"] = "Roaming.",
-        ["Playing.Details.RoamingDistrict"] = "Roaming in {main}.",
-        ["Playing.Details.RoamingSubDistrict"] = "Roaming in {sub},",
-        ["Playing.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
-        ["Playing.SmallImageText"] = "{lifepath}",
-        ["Playing.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
-        ["Playing.State"] = "{objective}",
-        ["Playing.State.Roaming"] = "",
-        ["Playing.State.RoamingDistrict"] = "",
-        ["Playing.State.RoamingSubDistrict"] = "{main}",
-        ["UI.Config.Save"] = "Save",
-        ["UI.Config.Load"] = "Load",
-        ["UI.Config.Reset"] = "Reset",
-        ["UI.Config.ForceUpdate"] = "Force Update",
-        ["UI.Config.Enabled"] = "Enabled",
-        ["UI.Config.SubmitInterval"] = "Submit Interval",
-        ["UI.Config.PLStyle"] = "Phantom Liberty Style (changes gender image)",
-        ["UI.Config.ShowQuest"] = "Show Quest",
-        ["UI.Config.ShowQuestObjective"] = "Show Quest Objective",
-        ["UI.Config.ShowDrivingActivity"] = "Show Driving Activity",
-        ["UI.Config.ShowCombatActivity"] = "Show Combat Activity",
-        ["UI.Config.ShowPlaythroughTime"] = "Show Playthrough Time [EXPERIMENTAL]"
+    locale = {},
+    localeName = nil,
+    fallbackLocale = {},
+    locales = {
+        ["en"] = require "locales/en",
+        ["it"] = require "locales/it",
     }
 }
+
+Localization.fallbackLocale = Localization.locales["en"]
+
+function Localization:SetLocale(localeName)
+    local newLocale = self.locales[localeName]
+    if not newLocale then return false; end
+    self.locale = newLocale
+    self.localeName = localeName
+    return true
+end
+
+Localization:SetLocale("en")
+
+function Localization:GetLocales()
+    local availLocales = {}
+    for k, v in next, self.locales do
+        table.insert(availLocales, {
+            name = k,
+            displayName = v["Locale.Name"] or k
+        })
+    end
+    return availLocales
+end
+
+function Localization:GetCurrentLocale()
+    return {
+        name = self.localeName,
+        displayName = self.locale["Locale.Name"] or self.localeName
+    }
+end
 
 ---@param str string
 ---@param formats table
@@ -86,11 +76,11 @@ function Localization.FormatString(str, formats)
 end
 
 function Localization:Get(key)
-    return self.locale[key]
+    return self.locale[key] or self.fallbackLocale[key] or key
 end
 
 function Localization:GetFormatted(key, formats)
-    return self.FormatString(self.locale[key], formats)
+    return self.FormatString(self:Get(key), formats)
 end
 
 return Localization
