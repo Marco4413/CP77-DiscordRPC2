@@ -299,17 +299,7 @@ local function Event_OnDraw()
     if not CP77RPC2.showUI then return; end
 
     if ImGui.Begin("CP77 - DiscordRPC 2") then
-        if ImGui.Button(Localization:Get("UI.Config.Save")) then
-            CP77RPC2:SaveConfig()
-        end
-        ImGui.SameLine()
-        if ImGui.Button(Localization:Get("UI.Config.Load")) then
-            CP77RPC2:LoadConfig()
-        end
-        ImGui.SameLine()
-        if ImGui.Button(Localization:Get("UI.Config.Reset")) then
-            CP77RPC2:ResetConfig()
-        end
+        ImGui.Text(Localization:Get("UI.Config.Activity.Label"))
         ImGui.SameLine()
         if ImGui.Button(Localization:Get("UI.Config.ForceUpdate")) then
             CP77RPC2.elapsedInterval = CP77RPC2.submitInterval + 1
@@ -362,6 +352,19 @@ local function Event_OnDraw()
         CP77RPC2.showDrivingActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowDrivingActivity"), CP77RPC2.showDrivingActivity)
         CP77RPC2.showCombatActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowCombatActivity"), CP77RPC2.showCombatActivity)
         CP77RPC2.showPlaythroughTime = ImGui.Checkbox(Localization:Get("UI.Config.ShowPlaythroughTime"), CP77RPC2.showPlaythroughTime)
+
+        ImGui.Separator()
+
+        ImGui.Text(Localization:Get("UI.Config.Label"))
+        ImGui.SameLine()
+
+        if ImGui.Button(Localization:Get("UI.Config.Load")) then CP77RPC2:LoadConfig(); end
+        ImGui.SameLine()
+
+        if ImGui.Button(Localization:Get("UI.Config.Save")) then CP77RPC2:SaveConfig(); end
+        ImGui.SameLine()
+
+        if ImGui.Button(Localization:Get("UI.Config.Reset")) then CP77RPC2:ResetConfig(); end
         ImGui.Separator()
     end
     ImGui.End()
