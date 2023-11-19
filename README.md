@@ -22,6 +22,38 @@ This new version is self-contained!
 - [redscript 0.5.16+](https://github.com/jac3km4/redscript)
 - [CET 1.28+](https://github.com/yamashi/CyberEngineTweaks)
 
+### Adding Translations
+
+Other CET mods can register locales using the `CP77RPC2.RegisterLocale` function.
+
+The following snippet of code can get you started:
+```lua
+-- Name used for logging inside the "onTweak" event
+local langName = "Italian"
+-- A unique id for this locale
+local localeName = "it"
+local locale = {
+    -- All loc keys and their meaning can be found at https://github.com/Marco4413/CP77-DiscordRPC2/blob/master/src/cet/locales/en.lua
+    ["Locale.Name"] = "Italiano (by Marco4413)",
+    ...
+}
+
+registerForEvent("onTweak", function()
+    local CP77RPC2 = GetMod("CP77RPC2")
+    if not CP77RPC2 then
+        print("[CP77RPC2 - " .. langName .. " Translation]: CP77RPC2 is not installed.")
+        return
+    end
+
+    local ok, error = CP77RPC2.RegisterLocale(localeName, locale)
+    if ok then
+        print("[CP77RPC2 - " .. langName .. " Translation]: Translation registered!")
+    else
+        print("[CP77RPC2 - " .. langName .. " Translation]: Failed to register translation: ", error)
+    end
+end)
+```
+
 ### Credits
 
 **Thanks to all contributors of RED4ext, redscript and CyberEngineTweaks for developing those projects, and to the
