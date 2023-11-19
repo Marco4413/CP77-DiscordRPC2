@@ -82,6 +82,14 @@ local function ConsoleLog(...)
     print("[ " .. os.date("%x %X") .. " ][ CP77RPC2 ]:", table.concat({ ... }))
 end
 
+---@param localeName string The name used internally by the Localization system to identify the locale
+---@param locale table The key-value pairs defining the translation
+---@return boolean ok Whether the locale was registered
+---@return string|nil error The reason the locale was not registered, if any
+function CP77RPC2.RegisterLocale(localeName, locale)
+    return Localization:RegisterLocale(localeName, locale)
+end
+
 function CP77RPC2:GetREDInstance()
     return Game.GetScriptableSystemsContainer():Get("CP77RPC2.CP77RPC2")
 end
@@ -191,6 +199,14 @@ end
 
 function CP77RPC2:GetGenderImageKey(gender)
     return self.style == "PL" and table.concat{gender:lower(),"-pl"} or gender:lower()
+end
+
+local function Event_OnTweak()
+    ConsoleLog("Registering extra locales.")
+    local ok, error = CP77RPC2.RegisterLocale("it", require "locales/it")
+    if not ok then
+        ConsoleLog("Failed to register Italian translation: ", error)
+    end
 end
 
 local function Event_OnInit()
@@ -380,6 +396,7 @@ end
 
 function CP77RPC2:Init()
     Handlers:RegisterHandlers(CP77RPC2)
+    registerForEvent("onTweak", Event_OnTweak)
     registerForEvent("onInit", Event_OnInit)
     registerForEvent("onUpdate", Event_OnUpdate)
     registerForEvent("onShutdown", Event_OnShutdown)

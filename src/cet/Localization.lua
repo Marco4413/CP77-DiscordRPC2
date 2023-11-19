@@ -24,22 +24,36 @@ OTHER DEALINGS IN THE SOFTWARE.
 ]]
 
 local Localization = {
-    locale = {},
-    localeName = nil,
-    fallbackLocale = {},
-    locales = {
-        ["en"] = require "locales/en",
-        ["it"] = require "locales/it",
-    }
+    _locale = {},
+    _localeName = nil,
+    _fallbackLocale = {},
+    _locales = { ["en"] = require "locales/en" }
 }
 
-Localization.fallbackLocale = Localization.locales["en"]
+Localization._fallbackLocale = Localization._locales["en"]
+
+---@param localeName string The name used internally by the Localization system to identify the locale
+---@param locale table The key-value pairs defining the translation
+---@return boolean ok Whether the locale was registered
+---@return string|nil error The reason the locale was not registered, if any
+function Localization:RegisterLocale(localeName, locale)
+    if type(localeName) ~= "string" then
+        return false, "Provided locale name is not a string."
+    elseif type(locale) ~= "table" then
+        return false, "Provided locale is not a table."
+    elseif self._locales[localeName] then
+        return false, "Duplicate locale."
+    end
+
+    self._locales[localeName] = locale
+    return true, nil
+end
 
 function Localization:SetLocale(localeName)
-    local newLocale = self.locales[localeName]
+    local newLocale = self._locales[localeName]
     if not newLocale then return false; end
-    self.locale = newLocale
-    self.localeName = localeName
+    self._locale = newLocale
+    self._localeName = localeName
     return true
 end
 
@@ -47,7 +61,7 @@ Localization:SetLocale("en")
 
 function Localization:GetLocales()
     local availLocales = {}
-    for k, v in next, self.locales do
+    for k, v in next, self._locales do
         table.insert(availLocales, {
             name = k,
             displayName = v["Locale.Name"] or k
@@ -58,8 +72,8 @@ end
 
 function Localization:GetCurrentLocale()
     return {
-        name = self.localeName,
-        displayName = self.locale["Locale.Name"] or self.localeName
+        name = self._localeName,
+        displayName = self._locale["Locale.Name"] or self._localeName
     }
 end
 
@@ -76,7 +90,7 @@ function Localization.FormatString(str, formats)
 end
 
 function Localization:Get(key)
-    return self.locale[key] or self.fallbackLocale[key] or key
+    return self._locale[key] or self._fallbackLocale[key] or key
 end
 
 function Localization:GetFormatted(key, formats)
