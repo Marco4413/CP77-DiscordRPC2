@@ -1,5 +1,5 @@
 return {
-    ["Locale.Name"] = "Italiano",
+    ["Locale.Name"] = "Italiano (by Marco4413)",
     ["Loading.Details"] = "In caricamento...",
     ["MainMenu.Details"] = "Nel menu principale.",
     ["PauseMenu.Details"] = "In Pausa.",
