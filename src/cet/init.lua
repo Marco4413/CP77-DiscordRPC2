@@ -241,12 +241,16 @@ local function Event_OnInit()
         CP77RPC2.playthroughTime = nil
     end)
 
-    GameUI.OnSessionStart(function (state)
+    GameUI.OnSessionStart(function ()
         CP77RPC2.gameState = GameStates.Playing
     end)
 
-    GameUI.OnLoadingStart(function (state)
+    GameUI.OnLoadingStart(function ()
         CP77RPC2.gameState = GameStates.Loading
+    end)
+
+    GameUI.OnFastTravelFinish(function ()
+        CP77RPC2.gameState = GameStates.Playing
     end)
 
     GameUI.OnMenuOpen(function (state)
