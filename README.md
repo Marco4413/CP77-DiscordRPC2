@@ -24,6 +24,9 @@ This new version is self-contained!
 
 ### Adding Translations
 
+**Note:** I don't accept PRs that add other languages since it would be a nightmare for me to maintain.
+That's why this mod has support for other mods to provide translations (see below).
+
 Other CET mods can register locales using the `CP77RPC2.RegisterLocale` function.
 
 The following snippet of code can get you started:
