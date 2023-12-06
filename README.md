@@ -20,7 +20,7 @@ This new version is self-contained!
 
 - [RED4ext 1.19+](https://github.com/WopsS/RED4ext)
 - [redscript 0.5.16+](https://github.com/jac3km4/redscript)
-- [CET 1.29+](https://github.com/yamashi/CyberEngineTweaks)
+- [CET 1.29.1+](https://github.com/yamashi/CyberEngineTweaks)
 
 ### Adding Translations
 
