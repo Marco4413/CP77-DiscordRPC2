@@ -13,6 +13,22 @@ public class CP77RPC2 extends ScriptableSystem {
         );
     }
 
+    public func IsRunning() -> Bool {
+        return DiscordRPC.IsRunning();
+    }
+
+    public func IsConnected() -> Bool {
+        return DiscordRPC.IsConnected();
+    }
+
+    public func IsOk() -> Bool {
+        return DiscordRPC.IsOk();
+    }
+
+    public func GetLastRunCallbacksResult() -> Int32 {
+        return DiscordRPC.GetLastRunCallbacksResult();
+    }
+
     public func UpdateActivity(activity: DiscordActivity) -> Bool {
         return DiscordRPC.UpdateActivity(activity, true);
     }
