@@ -8,6 +8,7 @@
 
 int64_t g_AppId = 0;
 std::unique_ptr<discord::Core> g_Core = nullptr;
+discord::Result g_LastRunCallbacksResult = discord::Result::NotRunning;
 std::mutex g_CoreMutex;
 std::unique_ptr<std::thread> g_Thread = nullptr;
 bool g_ThreadRunning = false;
@@ -28,9 +29,42 @@ void _RunCallbacks()
         std::this_thread::sleep_for(std::chrono::seconds(1));
         {
             std::lock_guard lock(g_CoreMutex);
-            if (g_Core) g_Core->RunCallbacks();
+            if (g_Core)
+                g_LastRunCallbacksResult = g_Core->RunCallbacks();
         }
     }
+}
+
+bool CP77RPC2::Discord::IsRunning()
+{
+    return g_Core && g_ThreadRunning;
+}
+
+bool CP77RPC2::Discord::IsConnected()
+{
+    if (!IsRunning())
+        return false;
+    switch (g_LastRunCallbacksResult) {
+    case discord::Result::ServiceUnavailable:
+    case discord::Result::InvalidAccessToken:
+    case discord::Result::NotInstalled:
+    case discord::Result::NotRunning:
+    case discord::Result::OAuth2Error:
+        return false;
+    case discord::Result::Ok:
+    default:
+        return true;
+    }
+}
+
+bool CP77RPC2::Discord::IsOk()
+{
+    return IsRunning() && g_LastRunCallbacksResult == discord::Result::Ok;
+}
+
+int32_t CP77RPC2::Discord::GetLastRunCallbacksResult()
+{
+    return static_cast<int32_t>(g_LastRunCallbacksResult);
 }
 
 void CP77RPC2::Discord::Start()
@@ -63,7 +97,7 @@ bool CP77RPC2::Discord::UpdateActivity(const CP77RPC2::REDDiscordActivity& redAc
         g_CoreMutex.lock();
     }
 
-    if (!g_Core || redActivity.ApplicationId != g_AppId) {
+    if (!g_Core || redActivity.ApplicationId != g_AppId || !IsConnected()) {
         g_Core = _CreateDiscordCore(redActivity.ApplicationId, DiscordCreateFlags_NoRequireDiscord);
         if (!g_Core) {
             g_CoreMutex.unlock();
@@ -71,7 +105,7 @@ bool CP77RPC2::Discord::UpdateActivity(const CP77RPC2::REDDiscordActivity& redAc
         }
         g_AppId = redActivity.ApplicationId;
     }
-    
+
     discord::Activity dActivity{};
     dActivity.SetState(redActivity.State.c_str());
     dActivity.SetDetails(redActivity.Details.c_str());

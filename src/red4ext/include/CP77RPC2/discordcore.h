@@ -9,6 +9,12 @@ namespace CP77RPC2
 {
     namespace Discord
     {
+        bool IsRunning();
+        bool IsConnected();
+        bool IsOk();
+
+        int32_t GetLastRunCallbacksResult();
+
         void Start();
         void Stop();
 
