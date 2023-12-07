@@ -386,6 +386,22 @@ local function Event_OnDraw()
 
         if ImGui.Button(Localization:Get("UI.Config.Reset")) then CP77RPC2:ResetConfig(); end
         ImGui.Separator()
+
+        if ImGui.CollapsingHeader("Debug") then
+            local red = CP77RPC2:GetREDInstance()
+            if red then
+                ImGui.Text("Running: " .. (red:IsRunning() and "Yes" or "No"))
+                ImGui.Text("Connected: " .. (red:IsConnected() and "Yes" or "No"))
+                if red:IsOk() then
+                    ImGui.Text("Error: No")
+                else
+                    ImGui.Text("Error: Yes (code=" .. tostring(red:GetLastRunCallbacksResult()) .. ")")
+                end
+            else
+                ImGui.Text("redscript instance not found.")
+            end
+        end
+        ImGui.Separator()
     end
     ImGui.End()
 end
