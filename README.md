@@ -64,6 +64,7 @@ people from the Cyberpunk 2077 Modding Community Discord Server for helping me u
 of RED4ext and redscript, I truly appreciate it!**
 
 Also thanks to **WillyJL** for making the [original mod](https://github.com/Willy-JL/cp77-discord-rpc) that inspired me to do this!
+And thanks to **psiberx** for developing [cet-kit](https://github.com/psiberx/cp2077-cet-kit).
 
 ## Building
 
