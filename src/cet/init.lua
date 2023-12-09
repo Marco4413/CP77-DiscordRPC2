@@ -174,10 +174,13 @@ function CP77RPC2:LoadConfig()
 end
 
 function CP77RPC2:SubmitActivity()
-    if self.activity then
-        self:GetREDInstance():UpdateActivity(self.activity)
+    local red = self:GetREDInstance()
+    if not red then
+        return
+    elseif self.activity then
+        red:UpdateActivity(self.activity)
     else
-        self:GetREDInstance():ClearActivity()
+        red:ClearActivity()
     end
 end
 
@@ -281,6 +284,9 @@ local function Event_OnUpdate(dt)
         return
     end
 
+    local red = CP77RPC2:GetREDInstance()
+    if not red then return; end
+
     CP77RPC2.elapsedInterval = CP77RPC2.elapsedInterval + dt
     if CP77RPC2.elapsedInterval >= CP77RPC2.submitInterval then
         CP77RPC2.elapsedInterval = 0
@@ -294,7 +300,7 @@ local function Event_OnUpdate(dt)
         end
 
         ---@type Activity
-        local activity = CP77RPC2:GetREDInstance():CreateDefaultActivity()
+        local activity = red:CreateDefaultActivity()
         activity.StartTimestamp = CP77RPC2.startedAt
 
         CP77RPC2.player = Game.GetPlayer()
