@@ -18,8 +18,8 @@ This new version is self-contained!
 
 ### Requirements
 
-- [RED4ext 1.19+](https://github.com/WopsS/RED4ext)
-- [redscript 0.5.16+](https://github.com/jac3km4/redscript)
+- [RED4ext 1.20+](https://github.com/WopsS/RED4ext)
+- [redscript 0.5.17+](https://github.com/jac3km4/redscript)
 - [CET 1.29.1+](https://github.com/yamashi/CyberEngineTweaks)
 
 ### Adding Translations
