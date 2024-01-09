@@ -2,7 +2,7 @@ return {
     -- The name to be displayed when selecting this locale
     -- I'd suggest using the following standard: "{LocaleDisplayName} (by {AuthorName})"
     ["Locale.Name"] = "English",
-    -- As you can see all keys have the same naming convetion: "{GameState}.{ActivityFieldName}.{SubGameState}"
+    -- As you can see all keys have the same naming convention: "{GameState}.{ActivityFieldName}.{SubGameState}"
     -- ActivityFieldName(s) can be found at https://discord.com/developers/docs/rich-presence/how-to#updating-presence-update-presence-payload-fields
     -- Just scroll a little down and there should be an image with a legend.
     ["Loading.Details"] = "Loading...",
@@ -61,6 +61,7 @@ return {
     -- Vars: main (Main District), sub (Sub District)
     ["Playing.State.RoamingSubDistrict"] = "{main}",
     -- UI SHOULD NOT be translated to help menu navigation if someone changes language by mistake
+    -- These can be omitted in user-created translations
     ["UI.Config.Label"] = "Config |",
     ["UI.Config.Save"] = "Save",
     ["UI.Config.Load"] = "Load",
