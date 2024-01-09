@@ -37,6 +37,7 @@ local langName = "Italian"
 local localeName = "it"
 local locale = {
     -- All loc keys and their meaning can be found at https://github.com/Marco4413/CP77-DiscordRPC2/blob/master/src/cet/locales/en.lua
+    -- If a key was not translated, it can be omitted and a fallback to English will be made.
     ["Locale.Name"] = "Italiano (by Marco4413)",
     ...
 }
