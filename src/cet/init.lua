@@ -47,6 +47,7 @@ local CP77RPC2 = {
     playthroughTime = nil, -- Available on save load
     elapsedInterval = 0,
     showUI = false,
+    overlayOnGame = false,
     enabled = true,
     submitInterval = 1,
     style = "",
@@ -329,7 +330,7 @@ local function Event_OnShutdown()
 end
 
 local function Event_OnDraw()
-    if not CP77RPC2.showUI then return; end
+    if not (CP77RPC2.showUI or CP77RPC2.overlayOnGame) then return; end
 
     if ImGui.Begin("CP77 - DiscordRPC 2") then
         ImGui.Text(Localization:Get("UI.Config.Activity.Label"))
@@ -402,6 +403,9 @@ local function Event_OnDraw()
         ImGui.Separator()
 
         if ImGui.CollapsingHeader("Debug") then
+            CP77RPC2.overlayOnGame = ImGui.Checkbox("Overlay on Game", CP77RPC2.overlayOnGame)
+            ImGui.Separator()
+
             local red = CP77RPC2:GetREDInstance()
             if red then
                 ImGui.Text("Running: " .. (red:IsRunning() and "Yes" or "No"))
