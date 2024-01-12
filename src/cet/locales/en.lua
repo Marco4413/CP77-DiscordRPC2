@@ -35,10 +35,10 @@ return {
     ["Driving.SmallImageText"] = "{lifepath}",
     -- Vars: lifepath, playthroughTime (hours)
     ["Driving.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
-    -- Vars: speed (km/h)
-    ["Driving.State.Forward"] = "Cruising at {speed}km/h",
-    -- Vars: speed (km/h)
-    ["Driving.State.Backwards"] = "Going backwards at {speed}km/h",
+    -- Vars: speed, speedUnit
+    ["Driving.State.Forward"] = "Cruising at {speed}{speedUnit}",
+    -- Vars: speed, speedUnit
+    ["Driving.State.Backwards"] = "Going backwards at {speed}{speedUnit}",
     ["Driving.State.Parked"] = "Currently parked.",
     -- Vars: name (Quest Name), objective (Empty if disabled by the player)
     ["Playing.Details"] = "Playing {name}",
@@ -75,5 +75,6 @@ return {
     ["UI.Config.ShowQuestObjective"] = "Show Quest Objective",
     ["UI.Config.ShowDrivingActivity"] = "Show Driving Activity",
     ["UI.Config.ShowCombatActivity"] = "Show Combat Activity",
-    ["UI.Config.ShowPlaythroughTime"] = "Show Playthrough Time [EXPERIMENTAL]"
+    ["UI.Config.ShowPlaythroughTime"] = "Show Playthrough Time [EXPERIMENTAL]",
+    ["UI.Config.SpeedAsMPH"] = "Speed as MPH"
 }

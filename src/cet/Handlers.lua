@@ -115,7 +115,9 @@ function Handlers.Driving(self, activity)
             local level = GameUtils.GetLevel(self.player)
             local lifepath = GameUtils.GetLifePath(self.player)
             local vehicleName = vehicle:GetDisplayName()
-            local vehicleSpeed = math.floor(vehicle:GetCurrentSpeed() * 3.6 + .5)
+            local speedUnit = self.speedAsMPH and "mph" or "km/h"
+            -- 2.23693629192 is 3.6 * 0.6213711922 where the latter number is the conversion factor between km/h and mph
+            local vehicleSpeed = math.floor(vehicle:GetCurrentSpeed() * (self.speedAsMPH and 2.23693629192 or 3.6) + .5)
             
             activity.Details = self.Localization:GetFormatted("Driving.Details", { vehicle = vehicleName })
             activity.LargeImageKey = self:GetGenderImageKey(GameUtils.GetGender(self.player))
@@ -129,9 +131,9 @@ function Handlers.Driving(self, activity)
             end
 
             if vehicleSpeed > 0 then
-                activity.State = self.Localization:GetFormatted("Driving.State.Forward", { speed = vehicleSpeed })
+                activity.State = self.Localization:GetFormatted("Driving.State.Forward", { speed = vehicleSpeed, speedUnit = speedUnit })
             elseif vehicleSpeed < 0 then
-                activity.State = self.Localization:GetFormatted("Driving.State.Backwards", { speed = -vehicleSpeed })
+                activity.State = self.Localization:GetFormatted("Driving.State.Backwards", { speed = -vehicleSpeed, speedUnit = speedUnit })
             else
                 activity.State = self.Localization:Get("Driving.State.Parked")
             end

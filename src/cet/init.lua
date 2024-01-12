@@ -55,6 +55,7 @@ local CP77RPC2 = {
     showDrivingActivity = false,
     showCombatActivity = false,
     showPlaythroughTime = false,
+    speedAsMPH = false,
     ---@type Activity|nil
     activity = nil,
     GameStates = GameStates,
@@ -104,6 +105,7 @@ function CP77RPC2:ResetConfig()
     self.showDrivingActivity = false
     self.showCombatActivity = false
     self.showPlaythroughTime = false
+    self.speedAsMPH = false
 end
 
 function CP77RPC2:SaveConfig()
@@ -118,6 +120,7 @@ function CP77RPC2:SaveConfig()
         showDrivingActivity = self.showDrivingActivity,
         showCombatActivity = self.showCombatActivity,
         showPlaythroughTime = self.showPlaythroughTime,
+        speedAsMPH = self.speedAsMPH,
     }))
     io.close(file)
 end
@@ -165,6 +168,10 @@ function CP77RPC2:LoadConfig()
 
         if type(config.showPlaythroughTime) == "boolean" then
             self.showPlaythroughTime = config.showPlaythroughTime
+        end
+
+        if type(config.speedAsMPH) == "boolean" then
+            self.speedAsMPH = config.speedAsMPH
         end
     end)
     
@@ -378,6 +385,7 @@ local function Event_OnDraw()
         CP77RPC2.showDrivingActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowDrivingActivity"), CP77RPC2.showDrivingActivity)
         CP77RPC2.showCombatActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowCombatActivity"), CP77RPC2.showCombatActivity)
         CP77RPC2.showPlaythroughTime = ImGui.Checkbox(Localization:Get("UI.Config.ShowPlaythroughTime"), CP77RPC2.showPlaythroughTime)
+        CP77RPC2.speedAsMPH = ImGui.Checkbox(Localization:Get("UI.Config.SpeedAsMPH"), CP77RPC2.speedAsMPH)
 
         ImGui.Separator()
 
