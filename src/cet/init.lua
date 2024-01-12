@@ -414,6 +414,24 @@ local function Event_OnDraw()
             else
                 ImGui.Text("redscript instance not found.")
             end
+
+            if CP77RPC2.activity then
+                ImGui.Separator()
+                local activityFields = {
+                    "Details",
+                    "LargeImageKey",
+                    "LargeImageText",
+                    "SmallImageKey",
+                    "SmallImageText",
+                    "State"
+                }
+    
+                for _, fieldName in next, activityFields do
+                    ImGui.Text(fieldName .. ":")
+                    ImGui.SameLine()
+                    ImGui.TextWrapped(CP77RPC2.activity[fieldName] or "")
+                end
+            end
         end
         ImGui.Separator()
     end
