@@ -60,8 +60,6 @@ return {
     ["Playing.State.RoamingDistrict"] = "",
     -- Vars: main (Main District), sub (Sub District)
     ["Playing.State.RoamingSubDistrict"] = "{main}",
-    -- UI SHOULD NOT be translated to help menu navigation if someone changes language by mistake
-    -- These can be omitted in user-created translations
     ["UI.Config.Label"] = "Config |",
     ["UI.Config.Save"] = "Save",
     ["UI.Config.Load"] = "Load",

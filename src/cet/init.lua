@@ -375,8 +375,7 @@ local function Event_OnDraw()
 
         ImGui.TextWrapped(table.concat {
             "Languages will not translate this text and the \"Language\" selection menu.",
-            " So, if you change language by mistake, you can still navigate the UI properly to revert the change.",
-            " Languages SHOULD NOT translate any part of the UI (albeit they could)."
+            " So, if you change language by mistake, you can still navigate the UI properly to revert the change."
         })
 
         CP77RPC2.showQuest = ImGui.Checkbox(Localization:Get("UI.Config.ShowQuest"), CP77RPC2.showQuest)
