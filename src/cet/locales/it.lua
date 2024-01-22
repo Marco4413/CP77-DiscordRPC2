@@ -31,5 +31,20 @@ return {
     ["Playing.State"] = "{objective}",
     ["Playing.State.Roaming"] = "",
     ["Playing.State.RoamingDistrict"] = "",
-    ["Playing.State.RoamingSubDistrict"] = "{main}"
+    ["Playing.State.RoamingSubDistrict"] = "{main}",
+    ["UI.Config.Label"] = "Config. |",
+    ["UI.Config.Save"] = "Salva",
+    ["UI.Config.Load"] = "Carica",
+    ["UI.Config.Reset"] = "Resetta",
+    ["UI.Config.Activity.Label"] = "Attività |",
+    ["UI.Config.ForceUpdate"] = "Forza Aggiornamento",
+    ["UI.Config.Enabled"] = "Mod Attivata",
+    ["UI.Config.SubmitInterval"] = "Intevallo di Aggiornamento",
+    ["UI.Config.PLStyle"] = "Stile Phantom Liberty (cambia l'immagine del genere)",
+    ["UI.Config.ShowQuest"] = "Mostra Quest",
+    ["UI.Config.ShowQuestObjective"] = "Mostra Obbiettivo Quest",
+    ["UI.Config.ShowDrivingActivity"] = "Mostra Attività di Guida",
+    ["UI.Config.ShowCombatActivity"] = "Mostra Attività di Combattimento",
+    ["UI.Config.ShowPlaythroughTime"] = "Mostra Tempo del Salvataggio [SPERIMENTALE]",
+    ["UI.Config.SpeedAsMPH"] = "Velocità in MPH"
 }
