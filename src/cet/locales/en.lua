@@ -5,6 +5,7 @@ return {
     -- As you can see all keys have the same naming convention: "{GameState}.{ActivityFieldName}.{SubGameState}"
     -- ActivityFieldName(s) can be found at https://discord.com/developers/docs/rich-presence/how-to#updating-presence-update-presence-payload-fields
     -- Just scroll a little down and there should be an image with a legend.
+    -- Missing entries of user-created locales will fallback to English.
     ["Loading.Details"] = "Loading...",
     ["MainMenu.Details"] = "Watching the Main Menu.",
     ["PauseMenu.Details"] = "Game Paused.",
