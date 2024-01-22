@@ -423,11 +423,11 @@ local function Event_OnDraw()
                 ImGui.Separator()
                 local activityFields = {
                     "Details",
+                    "State",
                     "LargeImageKey",
                     "LargeImageText",
                     "SmallImageKey",
-                    "SmallImageText",
-                    "State"
+                    "SmallImageText"
                 }
     
                 for _, fieldName in next, activityFields do
