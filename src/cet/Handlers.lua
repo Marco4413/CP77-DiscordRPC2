@@ -1,5 +1,5 @@
 --[[
-Copyright (c) 2023 [Marco4413](https://github.com/Marco4413/CP77-DiscordRPC2)
+Copyright (c) 2024 [Marco4413](https://github.com/Marco4413/CP77-DiscordRPC2)
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
