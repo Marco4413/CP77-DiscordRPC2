@@ -343,10 +343,11 @@ local function Event_OnDraw()
         CP77RPC2.enabled = ImGui.Checkbox(Localization:Get("UI.Config.Enabled"), CP77RPC2.enabled)
         
         do
+            ImGui.PushItemWidth(100)
             local newValue, changed = ImGui.DragFloat(
                 Localization:Get("UI.Config.SubmitInterval"),
                 CP77RPC2.submitInterval, 0.01, 1, 3600, "%.2f")
-            
+            ImGui.PopItemWidth()
             if changed then
                 CP77RPC2.submitInterval = math.max(newValue, 1)
             end
