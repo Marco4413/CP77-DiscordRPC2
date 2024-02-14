@@ -6,61 +6,45 @@ return {
     -- ActivityFieldName(s) can be found at https://discord.com/developers/docs/rich-presence/how-to#updating-presence-update-presence-payload-fields
     -- Just scroll a little down and there should be an image with a legend.
     -- Missing entries of user-created locales will fallback to English.
+
     ["Loading.Details"] = "Loading...",
     ["MainMenu.Details"] = "Watching the Main Menu.",
-    ["PauseMenu.Details"] = "Game Paused.",
-    -- Vars: level, streetCred
-    ["PauseMenu.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
-    -- Vars: lifepath
-    ["PauseMenu.SmallImageText"] = "{lifepath}",
-    -- Vars: lifepath, playthroughTime (hours)
-    ["PauseMenu.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
     ["DeathMenu.Details"] = "Admiring the Death Menu.",
     ["DeathMenu.State"] = "No Armor?",
-    -- Vars: health, maxHealth, armor
+
+    -- Common Vars: level, streetCred, playthroughTime (hours, if available)
+    ["Common.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
+    ["Common.SmallImageText"] = "{lifepath}",
+    ["Common.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
+
+    ["PauseMenu.Details"] = "Game Paused.",
+
+    -- Combat Vars: health, maxHealth, armor
     ["Combat.Details"] = "Fighting with {health}/{maxHealth}HP",
-    -- Vars: level, streetCred
-    ["Combat.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
-    -- Vars: lifepath
-    ["Combat.SmallImageText"] = "{lifepath}",
-    -- Vars: lifepath, playthroughTime (hours)
-    ["Combat.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
-    -- Vars: weapon
-    ["Combat.State.Weapon"] = "Using {weapon}",
     ["Combat.State.NoWeapon"] = "No weapon equipped.",
-    -- Vars: vehicle
+    -- Combat + Weapon Vars: weapon
+    ["Combat.State.Weapon"] = "Using {weapon}",
+    
+    -- Driving Vars: vehicle, speed (>= 0), speedUnit
     ["Driving.Details"] = "Driving {vehicle}",
-    -- Vars: level, streetCred
-    ["Driving.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
-    -- Vars: lifepath
-    ["Driving.SmallImageText"] = "{lifepath}",
-    -- Vars: lifepath, playthroughTime (hours)
-    ["Driving.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
-    -- Vars: speed, speedUnit
     ["Driving.State.Forward"] = "Cruising at {speed}{speedUnit}",
-    -- Vars: speed, speedUnit
     ["Driving.State.Backwards"] = "Going backwards at {speed}{speedUnit}",
     ["Driving.State.Parked"] = "Currently parked.",
-    -- Vars: name (Quest Name), objective (Empty if disabled by the player)
-    ["Playing.Details"] = "Playing {name}",
-    ["Playing.Details.Roaming"] = "Roaming.",
-    -- Vars: main (Main District)
-    ["Playing.Details.RoamingDistrict"] = "Roaming in {main}.",
-    -- Vars: main (Main District), sub (Sub District)
-    ["Playing.Details.RoamingSubDistrict"] = "Roaming in {sub},",
-    -- Vars: level, streetCred
-    ["Playing.LargeImageText"] = "Level: {level}; Street Cred: {streetCred}",
-    -- Vars: lifepath
-    ["Playing.SmallImageText"] = "{lifepath}",
-    -- Vars: lifepath, playthroughTime (hours)
-    ["Playing.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
-    -- Vars: name (Quest Name), objective (Empty if disabled by the player)
+
+    -- Playing Quest Vars: quest, objective (Empty if disabled by the player)
+    ["Playing.Details"] = "Playing {quest}",
     ["Playing.State"] = "{objective}",
+    
+    -- Roaming District Vars: district, subDistrict
+    ["Playing.Details.Roaming.District"] = "Roaming in {district}.",
+    ["Playing.State.Roaming.District"] = "",
+    ["Playing.Details.Roaming.SubDistrict"] = "Roaming in {subDistrict},",
+    ["Playing.State.Roaming.SubDistrict"] = "{district}",
+
+    -- No Specific Vars
+    ["Playing.Details.Roaming"] = "Roaming.",
     ["Playing.State.Roaming"] = "",
-    -- Vars: main (Main District)
-    ["Playing.State.RoamingDistrict"] = "",
-    -- Vars: main (Main District), sub (Sub District)
-    ["Playing.State.RoamingSubDistrict"] = "{main}",
+
     ["UI.Config.Label"] = "Config |",
     ["UI.Config.Save"] = "Save",
     ["UI.Config.Load"] = "Load",

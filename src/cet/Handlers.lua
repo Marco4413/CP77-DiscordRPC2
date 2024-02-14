@@ -27,165 +27,164 @@ local GameUtils = require "GameUtils"
 
 local Handlers = { }
 
----@param self CP77RPC2
+---@generic T
+---@param mod CP77RPC
 ---@param activity Activity
-function Handlers.Loading(self, activity)
-    if self.gameState == self.GameStates.Loading then
-        activity.Details = self.Localization:Get("Loading.Details")
+---@param activityVars T
+---@return T
+function Handlers.SetCommonInfo(mod, activity, activityVars)
+    if not activityVars then activityVars = {}; end
+    local level = GameUtils.GetLevel(mod.player)
+    local lifepath = GameUtils.GetLifePath(mod.player)
+    activityVars.level = level.level
+    activityVars.streetCred = level.streetCred
+    activityVars.lifepath = lifepath
+
+    activity.LargeImageKey = mod:GetGenderImageKey(GameUtils.GetGender(mod.player))
+    activity.LargeImageText = mod.Localization:GetFormatted("Common.LargeImageText", activityVars)
+    activity.SmallImageKey = lifepath:lower()
+    if mod.showPlaythroughTime and mod.playthroughTime then
+        activityVars.playthroughTime = math.floor(mod.playthroughTime / 3600)
+        activity.SmallImageText = mod.Localization:GetFormatted("Common.SmallImageText.WPlaythroughTime", activityVars)
+    else
+        activity.SmallImageText = mod.Localization:GetFormatted("Common.SmallImageText", activityVars)
+    end
+
+    return activityVars
+end
+
+---@param mod CP77RPC2
+---@param activity Activity
+function Handlers.Loading(mod, activity)
+    if mod.gameState == mod.GameStates.Loading then
+        activity.Details = mod.Localization:Get("Loading.Details")
         return true
     end
 end
 
----@param self CP77RPC2
+---@param mod CP77RPC2
 ---@param activity Activity
-function Handlers.MainMenu(self, activity)
-    if self.gameState == self.GameStates.MainMenu then
-        activity.Details = self.Localization:Get("MainMenu.Details")
+function Handlers.MainMenu(mod, activity)
+    if mod.gameState == mod.GameStates.MainMenu then
+        activity.Details = mod.Localization:Get("MainMenu.Details")
         return true
     end
 end
 
----@param self CP77RPC2
+---@param mod CP77RPC2
 ---@param activity Activity
-function Handlers.PauseMenu(self, activity)
-    if self.gameState == self.GameStates.PauseMenu and self.player then
-        local level = GameUtils.GetLevel(self.player)
-        local lifepath = GameUtils.GetLifePath(self.player)
-
-        activity.Details = self.Localization:Get("PauseMenu.Details")
-        activity.LargeImageKey = self:GetGenderImageKey(GameUtils.GetGender(self.player))
-        activity.LargeImageText = self.Localization:GetFormatted("PauseMenu.LargeImageText", level)
-        activity.SmallImageKey = lifepath:lower()
-        if self.showPlaythroughTime and self.playthroughTime then
-            activity.SmallImageText = self.Localization:GetFormatted(
-                "PauseMenu.SmallImageText.WPlaythroughTime", { lifepath = lifepath, playthroughTime = math.floor(self.playthroughTime / 3600) })
-        else
-            activity.SmallImageText = self.Localization:GetFormatted("PauseMenu.SmallImageText", { lifepath = lifepath })
-        end
+function Handlers.PauseMenu(mod, activity)
+    if mod.gameState == mod.GameStates.PauseMenu and mod.player then
+        local activityVars = Handlers.SetCommonInfo(mod, activity)
+        activity.Details = mod.Localization:GetFormatted("PauseMenu.Details", activityVars)
         activity.State = ""
         return true
     end
 end
 
----@param self CP77RPC2
+---@param mod CP77RPC2
 ---@param activity Activity
-function Handlers.DeathMenu(self, activity)
-    if self.gameState == self.GameStates.DeathMenu then
+function Handlers.DeathMenu(mod, activity)
+    if mod.gameState == mod.GameStates.DeathMenu then
         activity.LargeImageKey = "deathmenu"
-        activity.Details = self.Localization:Get("DeathMenu.Details")
-        activity.State = self.Localization:Get("DeathMenu.State")
+        activity.Details = mod.Localization:Get("DeathMenu.Details")
+        activity.State = mod.Localization:Get("DeathMenu.State")
         return true
     end
 end
 
----@param self CP77RPC2
+---@param mod CP77RPC2
 ---@param activity Activity
-function Handlers.Combat(self, activity)
-    if not self.showCombatActivity then return; end
-    if self.gameState == self.GameStates.Playing and self.player and self.player:IsInCombat() then
-        local level = GameUtils.GetLevel(self.player)
-        local lifepath = GameUtils.GetLifePath(self.player)
-        local healthArmor = GameUtils.GetHealthArmor(self.player)
-        local weaponName = GameUtils.GetWeaponName(self.player:GetActiveWeapon())
+function Handlers.Combat(mod, activity)
+    if not mod.showCombatActivity then return; end
+    if mod.gameState == mod.GameStates.Playing and mod.player and mod.player:IsInCombat() then
+        local healthArmor = GameUtils.GetHealthArmor(mod.player)
+        local weaponName = GameUtils.GetWeaponName(mod.player:GetActiveWeapon())
+        local activityVars = Handlers.SetCommonInfo(mod, activity, {
+            maxHealth = healthArmor.maxHealth,
+            health = healthArmor.health,
+            armor = healthArmor.armor,
+            weapon = weaponName
+        })
         
-        activity.Details = self.Localization:GetFormatted("Combat.Details", healthArmor)
-        activity.LargeImageKey = self:GetGenderImageKey(GameUtils.GetGender(self.player))
-        activity.LargeImageText = self.Localization:GetFormatted("Combat.LargeImageText", level)
-        activity.SmallImageKey = lifepath:lower()
-        if self.showPlaythroughTime and self.playthroughTime then
-            activity.SmallImageText = self.Localization:GetFormatted(
-                "Combat.SmallImageText.WPlaythroughTime", { lifepath = lifepath, playthroughTime = math.floor(self.playthroughTime / 3600) })
-        else
-            activity.SmallImageText = self.Localization:GetFormatted("Combat.SmallImageText", { lifepath = lifepath })
-        end
+        activity.Details = mod.Localization:GetFormatted("Combat.Details", activityVars)
         activity.State = weaponName and
-            self.Localization:GetFormatted("Combat.State.Weapon", { weapon = weaponName }) or
-            self.Localization:Get("Combat.State.NoWeapon")
+            mod.Localization:GetFormatted("Combat.State.Weapon", activityVars) or
+            mod.Localization:GetFormatted("Combat.State.NoWeapon", activityVars)
         return true
     end
 end
 
----@param self CP77RPC2
+---@param mod CP77RPC2
 ---@param activity Activity
-function Handlers.Driving(self, activity)
-    if not self.showDrivingActivity then return; end
-    if self.gameState == self.GameStates.Playing and self.player then
-        local vehicle = Game.GetMountedVehicle(self.player)
+function Handlers.Driving(mod, activity)
+    if not mod.showDrivingActivity then return; end
+    if mod.gameState == mod.GameStates.Playing and mod.player then
+        local vehicle = Game.GetMountedVehicle(mod.player)
         if vehicle and vehicle:IsPlayerDriver() then
-            local level = GameUtils.GetLevel(self.player)
-            local lifepath = GameUtils.GetLifePath(self.player)
             local vehicleName = vehicle:GetDisplayName()
-            local speedUnit = self.speedAsMPH and "mph" or "km/h"
+            local speedUnit = mod.speedAsMPH and "mph" or "km/h"
             -- 2.23693629192 is 3.6 * 0.6213711922 where the latter number is the conversion factor between km/h and mph
-            local vehicleSpeed = math.floor(vehicle:GetCurrentSpeed() * (self.speedAsMPH and 2.23693629192 or 3.6) + .5)
+            local vehicleSpeed = math.floor(vehicle:GetCurrentSpeed() * (mod.speedAsMPH and 2.23693629192 or 3.6) + .5)
+            local activityVars = Handlers.SetCommonInfo(mod, activity, {
+                vehicle = vehicleName,
+                speed = math.abs(vehicleSpeed),
+                speedUnit = speedUnit
+            })
             
-            activity.Details = self.Localization:GetFormatted("Driving.Details", { vehicle = vehicleName })
-            activity.LargeImageKey = self:GetGenderImageKey(GameUtils.GetGender(self.player))
-            activity.LargeImageText = self.Localization:GetFormatted("Driving.LargeImageText", level)
-            activity.SmallImageKey = lifepath:lower()
-            if self.showPlaythroughTime and self.playthroughTime then
-                activity.SmallImageText = self.Localization:GetFormatted(
-                    "Driving.SmallImageText.WPlaythroughTime", { lifepath = lifepath, playthroughTime = math.floor(self.playthroughTime / 3600) })
-            else
-                activity.SmallImageText = self.Localization:GetFormatted("Driving.SmallImageText", { lifepath = lifepath })
-            end
-
+            activity.Details = mod.Localization:GetFormatted("Driving.Details", activityVars)
             if vehicleSpeed > 0 then
-                activity.State = self.Localization:GetFormatted("Driving.State.Forward", { speed = vehicleSpeed, speedUnit = speedUnit })
+                activity.State = mod.Localization:GetFormatted("Driving.State.Forward", activityVars)
             elseif vehicleSpeed < 0 then
-                activity.State = self.Localization:GetFormatted("Driving.State.Backwards", { speed = -vehicleSpeed, speedUnit = speedUnit })
+                activity.State = mod.Localization:GetFormatted("Driving.State.Backwards", activityVars)
             else
-                activity.State = self.Localization:Get("Driving.State.Parked")
+                activity.State = mod.Localization:GetFormatted("Driving.State.Parked", activityVars)
             end
             return true
         end
     end
 end
 
----@param self CP77RPC2
+---@param mod CP77RPC2
 ---@param activity Activity
-function Handlers.Playing(self, activity)
-    if self.gameState == self.GameStates.Playing and self.player then
+function Handlers.Playing(mod, activity)
+    if mod.gameState == mod.GameStates.Playing and mod.player then
         local questShown = false
-        if self.showQuest then
+        if mod.showQuest then
             local questInfo = GameUtils.GetActiveQuest()
             if questInfo.name then
                 questShown = true
-                if not (self.showQuestObjective and questInfo.objective) then questInfo.objective = ""; end
-                activity.Details = self.Localization:GetFormatted("Playing.Details", questInfo)
-                activity.State = self.Localization:GetFormatted("Playing.State", questInfo)
+                local activityVars = Handlers.SetCommonInfo(mod, activity, {
+                    quest = questInfo.name,
+                    objective = questInfo.objective
+                })
+                if not (mod.showQuestObjective and activityVars.objective) then activityVars.objective = ""; end
+                activity.Details = mod.Localization:GetFormatted("Playing.Details", activityVars)
+                activity.State = mod.Localization:GetFormatted("Playing.State", activityVars)
             end
         end
 
-        
         if not questShown then
             local district = GameUtils.GetDistrict()
+            local activityVars = Handlers.SetCommonInfo(mod, activity, {
+                district = district.main,
+                subDistrict = district.sub
+            })
+
             if district.main then
                 if district.sub then
-                    activity.Details = self.Localization:GetFormatted("Playing.Details.RoamingSubDistrict", district)
-                    activity.State = self.Localization:GetFormatted("Playing.State.RoamingSubDistrict", district)
+                    activity.Details = mod.Localization:GetFormatted("Playing.Details.Roaming.SubDistrict", activityVars)
+                    activity.State = mod.Localization:GetFormatted("Playing.State.Roaming.SubDistrict", activityVars)
                 else
-                    activity.Details = self.Localization:GetFormatted("Playing.Details.RoamingDistrict", district)
-                    activity.State = self.Localization:GetFormatted("Playing.State.RoamingDistrict", district)
+                    activity.Details = mod.Localization:GetFormatted("Playing.Details.Roaming.District", activityVars)
+                    activity.State = mod.Localization:GetFormatted("Playing.State.Roaming.District", activityVars)
                 end
             else
-                activity.Details = self.Localization:Get("Playing.Details.Roaming")
-                activity.State = self.Localization:Get("Playing.State.Roaming")
+                activity.Details = mod.Localization:GetFormatted("Playing.Details.Roaming", activityVars)
+                activity.State = mod.Localization:GetFormatted("Playing.State.Roaming", activityVars)
             end
         end
 
-        local level = GameUtils.GetLevel(self.player)
-        local lifepath = GameUtils.GetLifePath(self.player)
-
-        activity.LargeImageKey = self:GetGenderImageKey(GameUtils.GetGender(self.player))
-        activity.LargeImageText = self.Localization:GetFormatted("Playing.LargeImageText", level)
-        activity.SmallImageKey = lifepath:lower()
-        if self.showPlaythroughTime and self.playthroughTime then
-            activity.SmallImageText = self.Localization:GetFormatted(
-                "Playing.SmallImageText.WPlaythroughTime", { lifepath = lifepath, playthroughTime = math.floor(self.playthroughTime / 3600) })
-        else
-            activity.SmallImageText = self.Localization:GetFormatted("Playing.SmallImageText", { lifepath = lifepath })
-        end
         return true
     end
 end
