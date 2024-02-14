@@ -20,11 +20,11 @@ return {
     ["PauseMenu.Details"] = "Game Paused.",
 
     -- Radio Vars: radio, song
-    ["Radio.Details"] = "Tuned on {radio}",
-    ["Radio.State"] = "Roaming while vibing to {song}",
+    ["Radio.Details"] = "Tuned on {radio},",
+    ["Radio.State"] = "{song}",
     -- Radio + Vehicle Vars: vehicle
-    ["Radio.Details.Vehicle"] = "Tuned on {radio}",
-    ["Radio.State.Vehicle"] = "Driving {vehicle} while jamming to {song}",
+    ["Radio.Details.Vehicle"] = "Tuned on {radio},",
+    ["Radio.State.Vehicle"] = "{song}",
 
     -- Combat Vars: health, maxHealth, armor
     ["Combat.Details"] = "Fighting with {health}/{maxHealth}HP",
