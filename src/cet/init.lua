@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 ]]
 
 local GameUI = require "libs/cp2077-cet-kit/GameUI"
+local BetterUI = require "BetterUI"
 local Handlers = require "Handlers"
 local Localization = require "Localization"
 
@@ -346,7 +347,7 @@ local function Event_OnDraw()
     if ImGui.Begin("CP77 - DiscordRPC 2") then
         ImGui.Text(Localization:Get("UI.Config.Activity.Label"))
         ImGui.SameLine()
-        if ImGui.Button(Localization:Get("UI.Config.ForceUpdate")) then
+        if BetterUI.FitButtonN(1, Localization:Get("UI.Config.ForceUpdate")) then
             CP77RPC2.elapsedInterval = CP77RPC2.submitInterval + 1
         end
 
@@ -354,11 +355,9 @@ local function Event_OnDraw()
         CP77RPC2.enabled = ImGui.Checkbox(Localization:Get("UI.Config.Enabled"), CP77RPC2.enabled)
         
         do
-            ImGui.PushItemWidth(100)
-            local newValue, changed = ImGui.DragFloat(
+            local newValue, changed = BetterUI.DragFloat(
                 Localization:Get("UI.Config.SubmitInterval"),
                 CP77RPC2.submitInterval, 0.01, 1, 3600, "%.2f")
-            ImGui.PopItemWidth()
             if changed then
                 CP77RPC2.submitInterval = math.max(newValue, 1)
             end
@@ -405,13 +404,13 @@ local function Event_OnDraw()
         ImGui.Text(Localization:Get("UI.Config.Label"))
         ImGui.SameLine()
 
-        if ImGui.Button(Localization:Get("UI.Config.Load")) then CP77RPC2:LoadConfig(); end
+        if BetterUI.FitButtonN(3, Localization:Get("UI.Config.Load")) then CP77RPC2:LoadConfig(); end
         ImGui.SameLine()
 
-        if ImGui.Button(Localization:Get("UI.Config.Save")) then CP77RPC2:SaveConfig(); end
+        if BetterUI.FitButtonN(2, Localization:Get("UI.Config.Save")) then CP77RPC2:SaveConfig(); end
         ImGui.SameLine()
 
-        if ImGui.Button(Localization:Get("UI.Config.Reset")) then CP77RPC2:ResetConfig(); end
+        if BetterUI.FitButtonN(1, Localization:Get("UI.Config.Reset")) then CP77RPC2:ResetConfig(); end
         ImGui.Separator()
 
         if ImGui.CollapsingHeader("Debug") then
