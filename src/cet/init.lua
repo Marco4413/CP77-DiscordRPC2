@@ -58,6 +58,7 @@ local CP77RPC2 = {
     showRadioActivity = false,
     showPlaythroughTime = false,
     speedAsMPH = false,
+    _configInitialized = false,
     ---@type Activity|nil
     activity = nil,
     GameStates = GameStates,
@@ -230,6 +231,7 @@ end
 local function Event_OnInit()
     CP77RPC2:ResetConfig() -- Loads default settings
     CP77RPC2:LoadConfig()
+    CP77RPC2._configInitialized = true
 
     CP77RPC2.startedAt = os.time() * 1e3
 
@@ -333,7 +335,9 @@ end
 local function Event_OnShutdown()
     CP77RPC2.activity = nil
     CP77RPC2:SubmitActivity()
-    CP77RPC2:SaveConfig()
+    if CP77RPC2._configInitialized then
+        CP77RPC2:SaveConfig()
+    end
 end
 
 local function Event_OnDraw()
