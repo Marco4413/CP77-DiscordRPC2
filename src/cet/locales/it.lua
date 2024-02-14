@@ -8,6 +8,10 @@ return {
     ["Common.SmallImageText"] = "{lifepath}",
     ["Common.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
     ["PauseMenu.Details"] = "In Pausa.",
+    ["Radio.Details"] = "Sintonizzato su {radio}",
+    ["Radio.State"] = "Esplorando durante l'ascolto di {song}",
+    ["Radio.Details.Vehicle"] = "Sintonizzato su {radio}",
+    ["Radio.State.Vehicle"] = "Guidando {vehicle} ascoltando {song}",
     ["Combat.Details"] = "Combattendo con {health}/{maxHealth}HP",
     ["Combat.State.Weapon"] = "Utilizzando {weapon}",
     ["Combat.State.NoWeapon"] = "Nessun arma equipaggiata.",
@@ -36,6 +40,7 @@ return {
     ["UI.Config.ShowQuestObjective"] = "Mostra Obbiettivo Quest",
     ["UI.Config.ShowDrivingActivity"] = "Mostra Attività di Guida",
     ["UI.Config.ShowCombatActivity"] = "Mostra Attività di Combattimento",
+    ["UI.Config.ShowRadioActivity"] = "Mostra Attività della Radio",
     ["UI.Config.ShowPlaythroughTime"] = "Mostra Tempo del Salvataggio [SPERIMENTALE]",
     ["UI.Config.SpeedAsMPH"] = "Velocità in MPH"
 }

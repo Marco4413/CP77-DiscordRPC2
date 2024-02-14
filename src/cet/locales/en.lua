@@ -19,6 +19,13 @@ return {
 
     ["PauseMenu.Details"] = "Game Paused.",
 
+    -- Radio Vars: radio, song
+    ["Radio.Details"] = "Tuned on {radio}",
+    ["Radio.State"] = "Roaming while vibing to {song}",
+    -- Radio + Vehicle Vars: vehicle
+    ["Radio.Details.Vehicle"] = "Tuned on {radio}",
+    ["Radio.State.Vehicle"] = "Driving {vehicle} while jamming to {song}",
+
     -- Combat Vars: health, maxHealth, armor
     ["Combat.Details"] = "Fighting with {health}/{maxHealth}HP",
     ["Combat.State.NoWeapon"] = "No weapon equipped.",
@@ -58,6 +65,7 @@ return {
     ["UI.Config.ShowQuestObjective"] = "Show Quest Objective",
     ["UI.Config.ShowDrivingActivity"] = "Show Driving Activity",
     ["UI.Config.ShowCombatActivity"] = "Show Combat Activity",
+    ["UI.Config.ShowRadioActivity"] = "Show Radio Activity",
     ["UI.Config.ShowPlaythroughTime"] = "Show Playthrough Time [EXPERIMENTAL]",
     ["UI.Config.SpeedAsMPH"] = "Speed as MPH"
 }

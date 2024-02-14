@@ -147,6 +147,36 @@ end
 
 ---@param mod CP77RPC2
 ---@param activity Activity
+function Handlers.Radio(mod, activity)
+    if not mod.showRadioActivity then return; end
+    if mod.gameState == mod.GameStates.Playing and mod.player then
+        local vehicle = Game.GetMountedVehicle(mod.player)
+        if vehicle and vehicle:IsPlayerDriver() and vehicle:IsRadioReceiverActive() then
+            local vehicleName = vehicle:GetDisplayName()
+            local radioName = Game.GetLocalizedTextByKey(vehicle:GetRadioReceiverStationName())
+            local songName = Game.GetLocalizedTextByKey(vehicle:GetRadioReceiverTrackName())
+            local activityVars = Handlers.SetCommonInfo(mod, activity, { radio = radioName, song = songName, vehicle = vehicleName })
+
+            activity.Details = mod.Localization:GetFormatted("Radio.Details.Vehicle", activityVars)
+            activity.State = mod.Localization:GetFormatted("Radio.State.Vehicle", activityVars)
+            return true
+        end
+
+        local pocketRadio = mod.player:GetPocketRadio()
+        if pocketRadio and pocketRadio:IsActive() then
+            local radioName = Game.GetLocalizedTextByKey(pocketRadio:GetStationName())
+            local songName = Game.GetLocalizedTextByKey(pocketRadio:GetTrackName())
+            local activityVars = Handlers.SetCommonInfo(mod, activity, { radio = radioName, song = songName })
+
+            activity.Details = mod.Localization:GetFormatted("Radio.Details", activityVars)
+            activity.State = mod.Localization:GetFormatted("Radio.State", activityVars)
+            return true
+        end
+    end
+end
+
+---@param mod CP77RPC2
+---@param activity Activity
 function Handlers.Playing(mod, activity)
     if mod.gameState == mod.GameStates.Playing and mod.player then
         local questShown = false
@@ -194,6 +224,7 @@ function Handlers:RegisterHandlers(mod)
     mod:AddActivityHandler(self.Playing)
     mod:AddActivityHandler(self.Combat)
     mod:AddActivityHandler(self.Driving)
+    mod:AddActivityHandler(self.Radio)
     mod:AddActivityHandler(self.DeathMenu)
     mod:AddActivityHandler(self.PauseMenu)
     mod:AddActivityHandler(self.MainMenu)

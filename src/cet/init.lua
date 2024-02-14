@@ -55,6 +55,7 @@ local CP77RPC2 = {
     showQuestObjective = false,
     showDrivingActivity = false,
     showCombatActivity = false,
+    showRadioActivity = false,
     showPlaythroughTime = false,
     speedAsMPH = false,
     ---@type Activity|nil
@@ -105,6 +106,7 @@ function CP77RPC2:ResetConfig()
     self.showQuestObjective = false
     self.showDrivingActivity = false
     self.showCombatActivity = false
+    self.showRadioActivity = false
     self.showPlaythroughTime = false
     self.speedAsMPH = false
 end
@@ -120,6 +122,7 @@ function CP77RPC2:SaveConfig()
         showQuestObjective = self.showQuestObjective,
         showDrivingActivity = self.showDrivingActivity,
         showCombatActivity = self.showCombatActivity,
+        showRadioActivity = self.showRadioActivity,
         showPlaythroughTime = self.showPlaythroughTime,
         speedAsMPH = self.speedAsMPH,
     }))
@@ -165,6 +168,10 @@ function CP77RPC2:LoadConfig()
 
         if type(config.showCombatActivity) == "boolean" then
             self.showCombatActivity = config.showCombatActivity
+        end
+
+        if type(config.showRadioActivity) == "boolean" then
+            self.showRadioActivity = config.showRadioActivity
         end
 
         if type(config.showPlaythroughTime) == "boolean" then
@@ -385,6 +392,7 @@ local function Event_OnDraw()
 
         CP77RPC2.showDrivingActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowDrivingActivity"), CP77RPC2.showDrivingActivity)
         CP77RPC2.showCombatActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowCombatActivity"), CP77RPC2.showCombatActivity)
+        CP77RPC2.showRadioActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowRadioActivity"), CP77RPC2.showRadioActivity)
         CP77RPC2.showPlaythroughTime = ImGui.Checkbox(Localization:Get("UI.Config.ShowPlaythroughTime"), CP77RPC2.showPlaythroughTime)
         CP77RPC2.speedAsMPH = ImGui.Checkbox(Localization:Get("UI.Config.SpeedAsMPH"), CP77RPC2.speedAsMPH)
 
