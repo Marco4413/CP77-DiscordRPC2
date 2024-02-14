@@ -419,12 +419,12 @@ local function Event_OnDraw()
 
             local red = CP77RPC2:GetREDInstance()
             if red then
-                ImGui.Text("Running: " .. (red:IsRunning() and "Yes" or "No"))
-                ImGui.Text("Connected: " .. (red:IsConnected() and "Yes" or "No"))
+                ImGui.Text("Discord Running: " .. (red:IsRunning() and "Yes" or "No"))
+                ImGui.Text("Connected to Discord: " .. (red:IsConnected() and "Yes" or "No"))
                 if red:IsOk() then
-                    ImGui.Text("Error: No")
+                    ImGui.Text("Discord Game SDK Error: No")
                 else
-                    ImGui.Text("Error: Yes (code=" .. tostring(red:GetLastRunCallbacksResult()) .. ")")
+                    ImGui.Text("Discord Game SDK Error: Yes (code=" .. tostring(red:GetLastRunCallbacksResult()) .. ")")
                 end
             else
                 ImGui.Text("redscript instance not found.")
