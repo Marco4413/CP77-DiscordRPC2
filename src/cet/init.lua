@@ -466,7 +466,10 @@ local function Event_OnDraw()
                 ImGui.Text("redscript instance not found.")
             end
 
-            ImGui.Text("RadioExt: " .. (CP77RPC2.RadioExt and "Found" or "Not Found"))
+            ImGui.Separator()
+            ImGui.Text("Mod Integrations:")
+            ImGui.Bullet()
+            ImGui.TextWrapped("RadioExt: " .. (CP77RPC2.RadioExt and "Found" or "Not Found"))
 
             if CP77RPC2.activity then
                 ImGui.Separator()
