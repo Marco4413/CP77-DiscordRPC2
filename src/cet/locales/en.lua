@@ -6,6 +6,7 @@ return {
     -- ActivityFieldName(s) can be found at https://discord.com/developers/docs/rich-presence/how-to#updating-presence-update-presence-payload-fields
     -- Just scroll a little down and there should be an image with a legend.
     -- Missing entries of user-created locales will fallback to English.
+    ["RadioExt.Stream.Song"] = "Streaming from the Net.",
 
     ["Loading.Details"] = "Loading...",
     ["MainMenu.Details"] = "Watching the Main Menu.",
@@ -66,6 +67,7 @@ return {
     ["UI.Config.ShowDrivingActivity"] = "Show Driving Activity",
     ["UI.Config.ShowCombatActivity"] = "Show Combat Activity",
     ["UI.Config.ShowRadioActivity"] = "Show Radio Activity",
+    ["UI.Config.EnableRadioExtIntegration"] = "Enable RadioExt Integration",
     ["UI.Config.ShowPlaythroughTime"] = "Show Playthrough Time [EXPERIMENTAL]",
     ["UI.Config.SpeedAsMPH"] = "Speed as MPH"
 }

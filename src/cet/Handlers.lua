@@ -153,9 +153,19 @@ function Handlers.Radio(mod, activity)
         local vehicle = Game.GetMountedVehicle(mod.player)
         local vehicleName = GameUtils.GetVehicleName(vehicle)
         if vehicleName and vehicle:IsPlayerDriver() and vehicle:IsRadioReceiverActive() then
-            local radioName = Game.GetLocalizedTextByKey(vehicle:GetRadioReceiverStationName())
-            local songName = Game.GetLocalizedTextByKey(vehicle:GetRadioReceiverTrackName())
-            if #songName == 0 then return false; end
+            local radioName
+            local songName
+
+            local radioExtStation = mod:GetRadioExtActiveStation();
+            if radioExtStation then
+                radioName = radioExtStation.radioName
+                songName = radioExtStation.songName
+            else
+                radioName = Game.GetLocalizedTextByKey(vehicle:GetRadioReceiverStationName())
+                songName = Game.GetLocalizedTextByKey(vehicle:GetRadioReceiverTrackName())
+                if #songName == 0 then return false; end
+            end
+
             local activityVars = Handlers.SetCommonInfo(mod, activity, { radio = radioName, song = songName, vehicle = vehicleName })
 
             activity.Details = mod.Localization:GetFormatted("Radio.Details.Vehicle", activityVars)
@@ -165,9 +175,19 @@ function Handlers.Radio(mod, activity)
 
         local pocketRadio = mod.player:GetPocketRadio()
         if pocketRadio and pocketRadio:IsActive() then
-            local radioName = Game.GetLocalizedTextByKey(pocketRadio:GetStationName())
-            local songName = Game.GetLocalizedTextByKey(pocketRadio:GetTrackName())
-            if #songName == 0 then return false; end
+            local radioName
+            local songName
+
+            local radioExtStation = mod:GetRadioExtActiveStation();
+            if radioExtStation then
+                radioName = radioExtStation.radioName
+                songName = radioExtStation.songName
+            else
+                radioName = Game.GetLocalizedTextByKey(pocketRadio:GetStationName())
+                songName = Game.GetLocalizedTextByKey(pocketRadio:GetTrackName())
+                if #songName == 0 then return false; end
+            end
+
             local activityVars = Handlers.SetCommonInfo(mod, activity, { radio = radioName, song = songName })
 
             activity.Details = mod.Localization:GetFormatted("Radio.Details", activityVars)

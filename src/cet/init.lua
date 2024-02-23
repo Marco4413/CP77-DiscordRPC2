@@ -57,6 +57,7 @@ local CP77RPC2 = {
     showDrivingActivity = false,
     showCombatActivity = false,
     showRadioActivity = false,
+    enableRadioExtIntegration = true,
     showPlaythroughTime = false,
     speedAsMPH = false,
     _configInitialized = false,
@@ -65,7 +66,8 @@ local CP77RPC2 = {
     GameStates = GameStates,
     _handlers = { },
     GameUtils = require("GameUtils"),
-    Localization = Localization
+    Localization = Localization,
+    RadioExt = nil
 }
 
 ---@class Activity
@@ -109,6 +111,7 @@ function CP77RPC2:ResetConfig()
     self.showDrivingActivity = false
     self.showCombatActivity = false
     self.showRadioActivity = false
+    self.enableRadioExtIntegration = true
     self.showPlaythroughTime = false
     self.speedAsMPH = false
 end
@@ -125,6 +128,7 @@ function CP77RPC2:SaveConfig()
         showDrivingActivity = self.showDrivingActivity,
         showCombatActivity = self.showCombatActivity,
         showRadioActivity = self.showRadioActivity,
+        enableRadioExtIntegration = self.enableRadioExtIntegration,
         showPlaythroughTime = self.showPlaythroughTime,
         speedAsMPH = self.speedAsMPH,
     }))
@@ -176,6 +180,10 @@ function CP77RPC2:LoadConfig()
             self.showRadioActivity = config.showRadioActivity
         end
 
+        if type(config.enableRadioExtIntegration) == "boolean" then
+            self.enableRadioExtIntegration = config.enableRadioExtIntegration
+        end
+
         if type(config.showPlaythroughTime) == "boolean" then
             self.showPlaythroughTime = config.showPlaythroughTime
         end
@@ -221,6 +229,25 @@ function CP77RPC2:GetGenderImageKey(gender)
     return self.style == "PL" and table.concat{gender:lower(),"-pl"} or gender:lower()
 end
 
+function CP77RPC2:GetRadioExtActiveStation()
+    if not self.enableRadioExtIntegration then return nil; end
+    if self.RadioExt and self.RadioExt.radioManager and self.RadioExt.radioManager.managerV then
+        local stationData = self.RadioExt.radioManager.managerV:getActiveStationData()
+        if not stationData then return nil; end
+        if stationData.isStream then
+            return {
+                radioName = stationData.station,
+                songName = self.Localization:Get("RadioExt.Stream.Song")
+            }
+        end
+        return {
+            radioName = stationData.station,
+            songName = stationData.track:match(".*[\\/](.+)%.") or ""
+        }
+    end
+    return nil
+end
+
 local function Event_OnTweak()
     ConsoleLog("Registering extra locales.")
     local ok, error = CP77RPC2.RegisterLocale("it", require "locales/it")
@@ -235,6 +262,10 @@ local function Event_OnInit()
     CP77RPC2._configInitialized = true
 
     CP77RPC2.startedAt = os.time() * 1e3
+
+    if RadioExt then
+        CP77RPC2.RadioExt = GetMod("radioExt")
+    end
 
     ObserveAfter("MenuScenario_SingleplayerMenu", "OnEnterScenario", function ()
         local metadata = Game.GetSystemRequestsHandler():GetLatestSaveMetadata()
@@ -396,6 +427,11 @@ local function Event_OnDraw()
         CP77RPC2.showDrivingActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowDrivingActivity"), CP77RPC2.showDrivingActivity)
         CP77RPC2.showCombatActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowCombatActivity"), CP77RPC2.showCombatActivity)
         CP77RPC2.showRadioActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowRadioActivity"), CP77RPC2.showRadioActivity)
+        if CP77RPC2.RadioExt and CP77RPC2.showRadioActivity then
+            CP77RPC2.enableRadioExtIntegration = ImGui.Checkbox(
+                Localization:Get("UI.Config.EnableRadioExtIntegration"),
+                CP77RPC2.enableRadioExtIntegration)
+        end
         CP77RPC2.showPlaythroughTime = ImGui.Checkbox(Localization:Get("UI.Config.ShowPlaythroughTime"), CP77RPC2.showPlaythroughTime)
         CP77RPC2.speedAsMPH = ImGui.Checkbox(Localization:Get("UI.Config.SpeedAsMPH"), CP77RPC2.speedAsMPH)
 
@@ -429,6 +465,8 @@ local function Event_OnDraw()
             else
                 ImGui.Text("redscript instance not found.")
             end
+
+            ImGui.Text("RadioExt: " .. (CP77RPC2.RadioExt and "Found" or "Not Found"))
 
             if CP77RPC2.activity then
                 ImGui.Separator()

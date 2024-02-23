@@ -1,5 +1,6 @@
 return {
     ["Locale.Name"] = "Italiano (by Marco4413)",
+    ["RadioExt.Stream.Song"] = "Streaming da Internet.",
     ["Loading.Details"] = "In caricamento...",
     ["MainMenu.Details"] = "Nel menu principale.",
     ["DeathMenu.Details"] = "Morto.",
@@ -41,6 +42,7 @@ return {
     ["UI.Config.ShowDrivingActivity"] = "Mostra Attività di Guida",
     ["UI.Config.ShowCombatActivity"] = "Mostra Attività di Combattimento",
     ["UI.Config.ShowRadioActivity"] = "Mostra Attività della Radio",
+    ["UI.Config.EnableRadioExtIntegration"] = "Attiva l'integrazione con RadioExt",
     ["UI.Config.ShowPlaythroughTime"] = "Mostra Tempo del Salvataggio [SPERIMENTALE]",
     ["UI.Config.SpeedAsMPH"] = "Velocità in MPH"
 }
