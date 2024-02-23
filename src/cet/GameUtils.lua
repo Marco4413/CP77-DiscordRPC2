@@ -66,6 +66,14 @@ function GameUtils.GetWeaponName(weapon)
     return Game.GetLocalizedTextByKey(weaponRecord:DisplayName())
 end
 
+---@param weapon gamevehicleObject|nil
+function GameUtils.GetVehicleName(vehicle)
+    if not vehicle then return nil; end
+    local vehicleRecord = vehicle:GetRecord()
+    if not vehicleRecord then return nil; end
+    return Game.GetLocalizedTextByKey(vehicleRecord:DisplayName())
+end
+
 function GameUtils.GetActiveQuest()
     local res = { name = nil, objective = nil }
     local journal = Game.GetJournalManager()

@@ -121,8 +121,8 @@ function Handlers.Driving(mod, activity)
     if not mod.showDrivingActivity then return; end
     if mod.gameState == mod.GameStates.Playing and mod.player then
         local vehicle = Game.GetMountedVehicle(mod.player)
-        if vehicle and vehicle:IsPlayerDriver() then
-            local vehicleName = vehicle:GetDisplayName()
+        local vehicleName = GameUtils.GetVehicleName(vehicle)
+        if vehicleName and vehicle:IsPlayerDriver() then
             local speedUnit = mod.speedAsMPH and "mph" or "km/h"
             -- 2.23693629192 is 3.6 * 0.6213711922 where the latter number is the conversion factor between km/h and mph
             local vehicleSpeed = math.floor(vehicle:GetCurrentSpeed() * (mod.speedAsMPH and 2.23693629192 or 3.6) + .5)
@@ -151,8 +151,8 @@ function Handlers.Radio(mod, activity)
     if not mod.showRadioActivity then return; end
     if mod.gameState == mod.GameStates.Playing and mod.player then
         local vehicle = Game.GetMountedVehicle(mod.player)
-        if vehicle and vehicle:IsPlayerDriver() and vehicle:IsRadioReceiverActive() then
-            local vehicleName = vehicle:GetDisplayName()
+        local vehicleName = GameUtils.GetVehicleName(vehicle)
+        if vehicleName and vehicle:IsPlayerDriver() and vehicle:IsRadioReceiverActive() then
             local radioName = Game.GetLocalizedTextByKey(vehicle:GetRadioReceiverStationName())
             local songName = Game.GetLocalizedTextByKey(vehicle:GetRadioReceiverTrackName())
             if #songName == 0 then return false; end
