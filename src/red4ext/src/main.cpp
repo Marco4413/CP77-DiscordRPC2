@@ -24,7 +24,7 @@ RED4EXT_C_EXPORT void RED4EXT_CALL Query(RED4ext::PluginInfo* aInfo)
 {
     aInfo->name = L"DiscordRPC2";
     aInfo->author = L"Marco4413";
-    aInfo->version = RED4EXT_SEMVER(2, 6, 1);
+    aInfo->version = RED4EXT_SEMVER(2, 7, 2);
     aInfo->runtime = RED4EXT_RUNTIME_LATEST;
     aInfo->sdk = RED4EXT_SDK_LATEST;
 }
