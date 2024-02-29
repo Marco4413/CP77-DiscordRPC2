@@ -6,7 +6,8 @@ RED4EXT_C_EXPORT bool RED4EXT_CALL Main(RED4ext::PluginHandle aHandle, RED4ext::
 {
     switch (aReason) {
     case RED4ext::EMainReason::Load: {
-        RED4ext::RTTIRegistrator::Add(CP77RPC2::RegisterTypes, CP77RPC2::PostRegisterTypes);
+        RED4ext::CRTTISystem::Get()->AddRegisterCallback(CP77RPC2::RegisterTypes);
+        RED4ext::CRTTISystem::Get()->AddPostRegisterCallback(CP77RPC2::PostRegisterTypes);
         CP77RPC2::Discord::Start();
         aSdk->logger->InfoF(aHandle, "Loaded!\n");
         break;
