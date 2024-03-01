@@ -9,11 +9,15 @@ This new version is self-contained!
 
 ### Features
 - Large image based on character gender.
-- Small image based on lifepath.
 - Level and Street Cred shown when hovering the large image.
+- Small image based on lifepath.
+- When hovering the small image:
+  - Playthrough time (optional, experimental).
+  - Lifepath.
 - Quest and Objective tracking (optional).
 - Driving activity (optional).
 - Combat activity (optional).
+- Radio activity (optional) with [RadioExt](https://github.com/justarandomguyintheinternet/CP77_radioExt) integration (also optional).
 - Roaming activity (no quest selected) showing what district the player is in.
 
 ### Requirements
