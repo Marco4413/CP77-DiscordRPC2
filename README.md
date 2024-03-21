@@ -22,9 +22,9 @@ This new version is self-contained!
 
 ### Requirements
 
-- [RED4ext 1.23+](https://github.com/WopsS/RED4ext)
-- [redscript 0.5.17+](https://github.com/jac3km4/redscript)
-- [CET 1.31.0+](https://github.com/yamashi/CyberEngineTweaks)
+- [RED4ext 1.24.3+](https://github.com/WopsS/RED4ext)
+- [redscript 0.5.18+](https://github.com/jac3km4/redscript)
+- [CET 1.32.0+](https://github.com/yamashi/CyberEngineTweaks)
 
 ### Adding Translations
 
