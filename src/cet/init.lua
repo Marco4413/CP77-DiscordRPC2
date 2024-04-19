@@ -248,6 +248,32 @@ function CP77RPC2:GetRadioExtActiveStation()
     return nil
 end
 
+function CP77RPC2:UpdateGameState()
+    -- We assume the player is in the MainMenu by default
+    -- GameUI does not detect the transition from DeathMenu to MainMenu
+    -- However, GameUI.IsDetached() does return true
+    local newState = GameStates.MainMenu
+    if GameUI.IsLoading() or GameUI.IsFastTravel() then
+        newState = GameStates.Loading
+    elseif GameUI.IsMenu() then
+        if GameUI.GetMenu() == "MainMenu" then
+            newState = GameStates.MainMenu
+        elseif GameUI.GetMenu() == "DeathMenu" then
+            newState = GameStates.DeathMenu
+        elseif GameUI.GetMenu() == "PauseMenu" then
+            newState = GameStates.PauseMenu
+        elseif not GameUI.IsDetached() then
+            newState = GameStates.Playing
+        end
+    elseif not GameUI.IsDetached() then
+        newState = GameStates.Playing
+    end
+    -- Update at the end in case some other mod has a reference to this mod.
+    -- Don't really know if mods run on different threads.
+    -- If not, congrats to CET for being well optimized.
+    self.gameState = newState
+end
+
 local function Event_OnTweak()
     ConsoleLog("Registering extra locales.")
     local ok, error = CP77RPC2.RegisterLocale("it", require "locales/it")
@@ -293,33 +319,14 @@ local function Event_OnInit()
         CP77RPC2.playthroughTime = nil
     end)
 
-    GameUI.OnSessionStart(function ()
-        CP77RPC2.gameState = GameStates.Playing
-    end)
-
-    GameUI.OnLoadingStart(function ()
-        CP77RPC2.gameState = GameStates.Loading
-    end)
-
-    GameUI.OnFastTravelFinish(function ()
-        CP77RPC2.gameState = GameStates.Playing
-    end)
-
-    GameUI.OnMenuOpen(function (state)
-        if state.menu == "MainMenu" then
-            CP77RPC2.gameState = GameStates.MainMenu
-        elseif state.menu == "DeathMenu" then
-            CP77RPC2.gameState = GameStates.DeathMenu
-        elseif state.menu == "PauseMenu" then
-            CP77RPC2.gameState = GameStates.PauseMenu
-        end
-    end)
-
-    GameUI.OnMenuClose(function (state)
-        if state.lastMenu ~= "MainMenu" and state.lastMenu ~= "DeathMenu" then
-            CP77RPC2.gameState = GameStates.Playing
-        end
-    end)
+    -- GameUI.Listen(function() end)
+    -- Don't add listeners for all Events of GameUI
+    GameUI.OnFastTravel(function () end)
+    GameUI.OnLoading(function () end)
+    GameUI.OnSession(function () end)
+    GameUI.OnMenu(function () end)
+    -- These listeners will force GameUI to update its state
+    -- So that CP77RPC2:UpdateGameState() can directly query GameUI
 
     ConsoleLog("Mod Initialized!")
 end
@@ -340,6 +347,9 @@ local function Event_OnUpdate(dt)
     if CP77RPC2.elapsedInterval >= CP77RPC2.submitInterval then
         CP77RPC2.elapsedInterval = 0
 
+        CP77RPC2:UpdateGameState()
+        -- CP77RPC2.gameState can't be GameStates.None after calling CP77RPC2:UpdateGameState()
+        -- Though this check will remain to be future-proof.
         if CP77RPC2.gameState == GameStates.None then
             if CP77RPC2.activity then
                 CP77RPC2.activity = nil
