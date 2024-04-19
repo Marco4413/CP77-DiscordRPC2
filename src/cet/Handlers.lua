@@ -38,7 +38,7 @@ function Handlers.SetCommonInfo(mod, activity, activityVars)
     local lifepath = GameUtils.GetLifePath(mod.player)
     activityVars.level = level.level
     activityVars.streetCred = level.streetCred
-    activityVars.lifepath = lifepath
+    activityVars.lifepath = mod.Localization:Get("Common.LifePath." .. (lifepath or "?"))
 
     activity.LargeImageKey = mod:GetGenderImageKey(GameUtils.GetGender(mod.player))
     activity.LargeImageText = mod.Localization:GetFormatted("Common.LargeImageText", activityVars)

@@ -26,7 +26,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 local GameUtils = { }
 
 ---@param player PlayerPuppet|nil
----@return string|nil
+---@return "Nomad"|"StreetKid"|"Corporate"|nil
 function GameUtils.GetLifePath(player)
     if not player then return nil; end
     local systems = Game.GetScriptableSystemsContainer()

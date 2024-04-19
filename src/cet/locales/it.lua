@@ -8,6 +8,7 @@ return {
     ["Common.LargeImageText"] = "Livello: {level}; Street Cred: {streetCred}",
     ["Common.SmallImageText"] = "{lifepath}",
     ["Common.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
+    -- Common.LifePath.* are not translated and their English counter-parts will be used.
     ["PauseMenu.Details"] = "In Pausa.",
     ["Radio.Details"] = "Ascoltando {radio},",
     ["Radio.State"] = "{song}",
