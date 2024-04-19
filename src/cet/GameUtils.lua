@@ -74,6 +74,27 @@ function GameUtils.GetVehicleName(vehicle)
     return Game.GetLocalizedTextByKey(vehicleRecord:DisplayName())
 end
 
+local _CNAME_VEHICLE_UI = CName.new("vehicle_ui")
+local _CNAME_SPEED_TO_MULTIPLIER = CName.new("speed_to_multiplier")
+
+---@param vehicle gamevehicleObject
+---@return number|nil vehicleSpeed The speed of the vehicle in mph as shown in the HUD
+---@return boolean goingForward
+function GameUtils.GetVehicleSpeed(vehicle)
+    if not vehicle then return nil, true; end
+    local currentSpeed = vehicle:GetCurrentSpeed()
+    local goingForward = currentSpeed >= 0
+
+    -- Code from: hudCarController#OnSpeedValueChanged
+    -- speedValue = AbsF(speedValue);
+    -- let multiplier: Float = GameInstance.GetStatsDataSystem(this.m_activeVehicle.GetGame()).GetValueFromCurve(n"vehicle_ui", speedValue, n"speed_to_multiplier");
+    -- inkTextRef.SetText(this.m_SpeedValue, IntToString(RoundMath(speedValue * multiplier)));
+
+    local speedValue = math.abs(currentSpeed)
+    local multiplier = Game.GetStatsDataSystem():GetValueFromCurve(_CNAME_VEHICLE_UI, speedValue, _CNAME_SPEED_TO_MULTIPLIER)
+    return speedValue * multiplier, goingForward
+end
+
 function GameUtils.GetActiveQuest()
     local res = { name = nil, objective = nil }
     local journal = Game.GetJournalManager()
