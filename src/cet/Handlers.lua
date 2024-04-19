@@ -124,19 +124,23 @@ function Handlers.Driving(mod, activity)
         local vehicleName = GameUtils.GetVehicleName(vehicle)
         if vehicleName and vehicle:IsPlayerDriver() then
             local speedUnit = mod.speedAsMPH and "mph" or "km/h"
-            -- 2.23693629192 is 3.6 * 0.6213711922 where the latter number is the conversion factor between km/h and mph
-            local vehicleSpeed = math.floor(vehicle:GetCurrentSpeed() * (mod.speedAsMPH and 2.23693629192 or 3.6) + .5)
+            local vehicleSpeed, goingForward = GameUtils.GetVehicleSpeed(vehicle)
+            -- 1.609344 is the conversion factor from mph to km/h
+            if not mod.speedAsMPH then vehicleSpeed = vehicleSpeed * 1.609344; end
+            -- local vehicleSpeed = math.floor(vehicle:GetCurrentSpeed() * (mod.speedAsMPH and 2.23693629192 or 3.6) + .5)
             local activityVars = Handlers.SetCommonInfo(mod, activity, {
                 vehicle = vehicleName,
-                speed = math.abs(vehicleSpeed),
+                speed = math.floor(vehicleSpeed + .5),
                 speedUnit = speedUnit
             })
             
             activity.Details = mod.Localization:GetFormatted("Driving.Details", activityVars)
-            if vehicleSpeed > 0 then
-                activity.State = mod.Localization:GetFormatted("Driving.State.Forward", activityVars)
-            elseif vehicleSpeed < 0 then
-                activity.State = mod.Localization:GetFormatted("Driving.State.Backwards", activityVars)
+            if vehicleSpeed >= 1 then
+                if goingForward then
+                    activity.State = mod.Localization:GetFormatted("Driving.State.Forward", activityVars)
+                else
+                    activity.State = mod.Localization:GetFormatted("Driving.State.Backwards", activityVars)
+                end
             else
                 activity.State = mod.Localization:GetFormatted("Driving.State.Parked", activityVars)
             end
