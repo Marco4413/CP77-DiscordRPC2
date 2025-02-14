@@ -45,8 +45,8 @@ return {
     ["UI.Config.SpeedAsMPH"] = "Velocità in MPH",
     ["UI.Config.Activities"] = "Attività",
     ["UI.Config.Activities.Description"] = [[
-Premere la checkbox attiva/disattiva l'attività.
-Mentre il pulsante '<' o '>' modifica la priorità dell'attività. L'attività più in alto è quella con meno priorità (ovvero quella che verrà sovrascritta da quelle sotto se una di esse viene applicata).
+Spunta le attività che vuoi attivare.
+Premi il pulsante '<' o '>' per modificare la priorità dell'attività. L'attività più in alto è quella con meno priorità (ovvero quella che verrà sovrascritta da quelle sotto se una di esse viene applicata).
 ]],
     ["UI.Config.Activities.Item.DiscordRPC2.Playing"] = "Gioco",
     ["UI.Config.Activities.Item.DiscordRPC2.Combat"] = "Combattimento",
