@@ -1,5 +1,5 @@
 --[[
-Copyright (c) 2024 [Marco4413](https://github.com/Marco4413/CP77-DiscordRPC2)
+Copyright (c) 2025 [Marco4413](https://github.com/Marco4413/CP77-DiscordRPC2)
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -87,6 +87,10 @@ local CP77RPC2 = {
 
 local function ConsoleLog(...)
     print("[ " .. os.date("%x %X") .. " ][ CP77RPC2 ]:", table.concat({ ... }))
+end
+
+local function ConsoleWarn(...)
+    print("[ " .. os.date("%x %X") .. " ][ CP77RPC2 ][ WARN ]:", table.concat({ ... }))
 end
 
 ---@param localeName string The name used internally by the Localization system to identify the locale
@@ -209,20 +213,49 @@ function CP77RPC2:SubmitActivity()
     end
 end
 
+---Use this method within the onTweak CET event
+---@param handlerId string An id which UNIQUELY identifies the provided handler
+---@param handler ActivityHandler
+function CP77RPC2:SetActivityHandler(handlerId, handler)
+    if self._handlers[handlerId] then
+        ConsoleWarn("Handler: ", handlerId, " is being overridden.")
+
+        self._handlers[handlerId] = handler
+        for _, h in next, self._handlers do
+            if h.id == handlerId then
+                h.handler = handler
+                break
+            end
+        end
+    else
+        self._handlers[handlerId] = handler
+        table.insert(self._handlers, { id = handlerId, handler = handler })
+    end
+end
+
+---@param handlerId string
+function CP77RPC2:DelActivityHandler(handlerId)
+    if self._handlers[handlerId] then
+        self._handlers[handlerId] = nil
+        for i=#self._handlers, 1, -1 do
+            if (self._handlers[i].id == handlerId) then
+                table.remove(self._handlers, i)
+                break
+            end
+        end
+    end
+end
+
 ---@param handler ActivityHandler
 function CP77RPC2:AddActivityHandler(handler)
-    table.insert(self._handlers, handler)
+    -- Deprecated because an id is necessary to preserve handler order
+    ConsoleWarn("Usage of deprecated method CP77RPC2:AddActivityHandler(), use :SetActivityHandler instead.")
     return handler
 end
 
 ---@param handler ActivityHandler
 function CP77RPC2:RemoveActivityHandler(handler)
-    for i=#self._handlers, 1, -1 do
-        if (self._handlers[i] == handler) then
-            table.remove(self._handlers, i)
-            break
-        end
-    end
+    ConsoleWarn("Usage of deprecated method CP77RPC2:RemoveActivityHandler(), use :DelActivityHandler instead.")
 end
 
 function CP77RPC2:GetGenderImageKey(gender)
@@ -364,7 +397,7 @@ local function Event_OnUpdate(dt)
 
         CP77RPC2.player = Game.GetPlayer()
         for i=#CP77RPC2._handlers, 1, -1 do
-            if CP77RPC2._handlers[i](CP77RPC2, activity) then
+            if CP77RPC2._handlers[i].handler(CP77RPC2, activity) then
                 break
             end
         end
