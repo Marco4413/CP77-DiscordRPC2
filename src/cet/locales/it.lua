@@ -36,7 +36,7 @@ return {
     ["UI.Config.Activity.Label"] = "Attività |",
     ["UI.Config.ForceUpdate"] = "Forza Aggiornamento",
     ["UI.Config.Enabled"] = "Mod Attivata",
-    ["UI.Config.SubmitInterval"] = "Intevallo di Aggiornamento",
+    ["UI.Config.SubmitInterval"] = "Intervallo di Aggiornamento",
     ["UI.Config.PLStyle"] = "Stile Phantom Liberty (cambia l'immagine del genere)",
     ["UI.Config.ShowQuest"] = "Mostra Quest",
     ["UI.Config.ShowQuestObjective"] = "Mostra Obbiettivo Quest",
