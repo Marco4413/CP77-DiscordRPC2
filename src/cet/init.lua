@@ -54,9 +54,6 @@ local CP77RPC2 = {
     style = "",
     showQuest = true,
     showQuestObjective = false,
-    showDrivingActivity = false,
-    showCombatActivity = false,
-    showRadioActivity = false,
     enableRadioExtIntegration = true,
     showPlaythroughTime = false,
     speedAsMPH = false,
@@ -113,9 +110,6 @@ function CP77RPC2:ResetConfig()
     Localization:SetLocale("en")
     self.showQuest = true
     self.showQuestObjective = false
-    self.showDrivingActivity = false
-    self.showCombatActivity = false
-    self.showRadioActivity = false
     self.enableRadioExtIntegration = true
     self.showPlaythroughTime = false
     self.speedAsMPH = false
@@ -137,9 +131,6 @@ function CP77RPC2:SaveConfig()
         locale = Localization:GetCurrentLocale().name,
         showQuest = self.showQuest,
         showQuestObjective = self.showQuestObjective,
-        showDrivingActivity = self.showDrivingActivity,
-        showCombatActivity = self.showCombatActivity,
-        showRadioActivity = self.showRadioActivity,
         enableRadioExtIntegration = self.enableRadioExtIntegration,
         showPlaythroughTime = self.showPlaythroughTime,
         speedAsMPH = self.speedAsMPH,
@@ -179,18 +170,6 @@ function CP77RPC2:LoadConfig()
 
         if type(config.showQuestObjective) == "boolean" then
             self.showQuestObjective = config.showQuestObjective
-        end
-
-        if type(config.showDrivingActivity) == "boolean" then
-            self.showDrivingActivity = config.showDrivingActivity
-        end
-
-        if type(config.showCombatActivity) == "boolean" then
-            self.showCombatActivity = config.showCombatActivity
-        end
-
-        if type(config.showRadioActivity) == "boolean" then
-            self.showRadioActivity = config.showRadioActivity
         end
 
         if type(config.enableRadioExtIntegration) == "boolean" then
@@ -270,6 +249,16 @@ function CP77RPC2:DelActivityHandler(handlerId)
             end
         end
     end
+end
+
+function CP77RPC2:IsActivityHandlerEnabled(handlerId)
+    if not self._handlers[handlerId] then return false; end
+    for i=#self._handlers, 1, -1 do
+        if self._handlers[i].id == handlerId then
+            return self._handlers[i].enabled
+        end
+    end
+    return false
 end
 
 function CP77RPC2:GetActivityHandlerComparator(orders)
@@ -524,10 +513,7 @@ local function Event_OnDraw()
             CP77RPC2.showQuestObjective = ImGui.Checkbox(Localization:Get("UI.Config.ShowQuestObjective"), CP77RPC2.showQuestObjective)
         end
 
-        CP77RPC2.showDrivingActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowDrivingActivity"), CP77RPC2.showDrivingActivity)
-        CP77RPC2.showCombatActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowCombatActivity"), CP77RPC2.showCombatActivity)
-        CP77RPC2.showRadioActivity = ImGui.Checkbox(Localization:Get("UI.Config.ShowRadioActivity"), CP77RPC2.showRadioActivity)
-        if CP77RPC2.RadioExt and CP77RPC2.showRadioActivity then
+        if CP77RPC2.RadioExt and CP77RPC2:IsActivityHandlerEnabled("DiscordRPC2.Radio") then
             CP77RPC2.enableRadioExtIntegration = ImGui.Checkbox(
                 Localization:Get("UI.Config.EnableRadioExtIntegration"),
                 CP77RPC2.enableRadioExtIntegration)

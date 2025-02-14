@@ -96,7 +96,6 @@ end
 ---@param mod CP77RPC2
 ---@param activity Activity
 function Handlers.Combat(mod, activity)
-    if not mod.showCombatActivity then return; end
     if mod.gameState == mod.GameStates.Playing and mod.player and mod.player:IsInCombat() then
         local healthArmor = GameUtils.GetHealthArmor(mod.player)
         local weaponName = GameUtils.GetWeaponName(mod.player:GetActiveWeapon())
@@ -118,7 +117,6 @@ end
 ---@param mod CP77RPC2
 ---@param activity Activity
 function Handlers.Driving(mod, activity)
-    if not mod.showDrivingActivity then return; end
     if mod.gameState == mod.GameStates.Playing and mod.player then
         local vehicle = Game.GetMountedVehicle(mod.player)
         local vehicleName = GameUtils.GetVehicleName(vehicle)
@@ -152,7 +150,6 @@ end
 ---@param mod CP77RPC2
 ---@param activity Activity
 function Handlers.Radio(mod, activity)
-    if not mod.showRadioActivity then return; end
     if mod.gameState == mod.GameStates.Playing and mod.player then
         local vehicle = Game.GetMountedVehicle(mod.player)
         local vehicleName = GameUtils.GetVehicleName(vehicle)
