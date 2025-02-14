@@ -489,25 +489,6 @@ local function Event_OnDraw()
             CP77RPC2.style = ""
         end
 
-        local currentLocale = Localization:GetCurrentLocale()
-        if ImGui.BeginCombo("Language", currentLocale.displayName) then
-            local locales = Localization:GetLocales()
-        
-            for _, locale in next, locales do
-                local selected = locale.name == currentLocale.name
-                if ImGui.Selectable(locale.displayName, selected) and not selected then
-                    Localization:SetLocale(locale.name)
-                end
-            end
-        
-            ImGui.EndCombo()
-        end
-
-        ImGui.TextWrapped(table.concat {
-            "Languages will not translate this text and the \"Language\" selection menu.",
-            " So, if you change language by mistake, you can still navigate the UI properly to revert the change."
-        })
-
         CP77RPC2.showQuest = ImGui.Checkbox(Localization:Get("UI.Config.ShowQuest"), CP77RPC2.showQuest)
         if CP77RPC2.showQuest then
             CP77RPC2.showQuestObjective = ImGui.Checkbox(Localization:Get("UI.Config.ShowQuestObjective"), CP77RPC2.showQuestObjective)
@@ -555,6 +536,28 @@ local function Event_OnDraw()
             end
         end
 
+        ImGui.Separator()
+        ImGui.PushID("Language")
+        
+        local currentLocale = Localization:GetCurrentLocale()
+        ImGui.Text("Language:")
+        ImGui.SameLine()
+        ImGui.PushItemWidth(ImGui.GetContentRegionAvail())
+        if ImGui.BeginCombo("", currentLocale.displayName) then
+            local locales = Localization:GetLocales()
+
+            for _, locale in next, locales do
+                local selected = locale.name == currentLocale.name
+                if ImGui.Selectable(locale.displayName, selected) and not selected then
+                    Localization:SetLocale(locale.name)
+                end
+            end
+
+            ImGui.EndCombo()
+        end
+        ImGui.PopItemWidth()
+
+        ImGui.PopID()
         ImGui.Separator()
 
         ImGui.Text(Localization:Get("UI.Config.Label"))
