@@ -65,6 +65,7 @@ local CP77RPC2 = {
     activity = nil,
     GameStates = GameStates,
     _handlers = { },
+    _initHandlersOrder = { },
     GameUtils = require("GameUtils"),
     Localization = Localization,
     RadioExt = nil
@@ -118,9 +119,15 @@ function CP77RPC2:ResetConfig()
     self.enableRadioExtIntegration = true
     self.showPlaythroughTime = false
     self.speedAsMPH = false
+    self:SortActivityHandlersBy(self._initHandlersOrder)
 end
 
 function CP77RPC2:SaveConfig()
+    local handlers = {}
+    for i=1, #self._handlers do
+        handlers[self._handlers[i].id] = { order = i }
+    end
+
     local file = io.open("data/config.json", "w")
     file:write(json.encode({
         enabled = self.enabled,
@@ -135,6 +142,7 @@ function CP77RPC2:SaveConfig()
         enableRadioExtIntegration = self.enableRadioExtIntegration,
         showPlaythroughTime = self.showPlaythroughTime,
         speedAsMPH = self.speedAsMPH,
+        handlers = handlers,
     }))
     io.close(file)
 end
@@ -195,6 +203,10 @@ function CP77RPC2:LoadConfig()
         if type(config.speedAsMPH) == "boolean" then
             self.speedAsMPH = config.speedAsMPH
         end
+
+        if type(config.handlers) == "table" then
+            self:SortActivityHandlersBy(config.handlers)
+        end
     end)
     
     if not ok then
@@ -230,6 +242,7 @@ function CP77RPC2:SetActivityHandler(handlerId, handler)
     else
         self._handlers[handlerId] = handler
         table.insert(self._handlers, { id = handlerId, handler = handler })
+        self._initHandlersOrder[handlerId] = #self._handlers
     end
 end
 
@@ -243,7 +256,35 @@ function CP77RPC2:DelActivityHandler(handlerId)
                 break
             end
         end
+
+        local removedOrder = self._initHandlersOrder[handlerId]
+        self._initHandlersOrder[handlerId] = nil
+        for k, order in next, self._initHandlersOrder do
+            if order > removedOrder then
+                -- The docs for next state that modifying is safe (adding is not)
+                self._initHandlersOrder[k] = order - 1
+            end
+        end
     end
+end
+
+function CP77RPC2:GetActivityHandlerComparator(orders)
+    return function (a, b)
+        local prioA = orders[a.id]
+        if type(prioA) == "table"  then prioA = prioA.order; end
+        if type(prioA) ~= "number" then return false; end
+
+        local prioB = orders[b.id]
+        if type(prioB) == "table"  then prioB = prioB.order; end
+        if type(prioB) ~= "number" then return true; end
+
+        return prioA < prioB
+    end
+end
+
+function CP77RPC2:SortActivityHandlersBy(orders)
+    -- I don't really like sorting them directly, change it if it causes any issue
+    table.sort(self._handlers, self:GetActivityHandlerComparator(orders))
 end
 
 ---@param handler ActivityHandler
@@ -477,6 +518,39 @@ local function Event_OnDraw()
         end
         CP77RPC2.showPlaythroughTime = ImGui.Checkbox(Localization:Get("UI.Config.ShowPlaythroughTime"), CP77RPC2.showPlaythroughTime)
         CP77RPC2.speedAsMPH = ImGui.Checkbox(Localization:Get("UI.Config.SpeedAsMPH"), CP77RPC2.speedAsMPH)
+
+        -- TODO: Localization
+        if ImGui.CollapsingHeader("Activities") then
+            for i=1, #CP77RPC2._handlers do
+                ImGui.PushID(CP77RPC2._handlers[i].id)
+
+                if i > 1 then
+                    if BetterUI.SquareButton("<") then
+                        local tmp = CP77RPC2._handlers[i]
+                        CP77RPC2._handlers[i]   = CP77RPC2._handlers[i-1]
+                        CP77RPC2._handlers[i-1] = tmp
+                    end
+                else
+                    BetterUI.SquareButton(" ")
+                end
+
+                ImGui.SameLine()
+                if i < #CP77RPC2._handlers then
+                    if BetterUI.SquareButton(">") then
+                        local tmp = CP77RPC2._handlers[i]
+                        CP77RPC2._handlers[i]   = CP77RPC2._handlers[i+1]
+                        CP77RPC2._handlers[i+1] = tmp
+                    end
+                else
+                    BetterUI.SquareButton(" ")
+                end
+
+                ImGui.SameLine()
+                ImGui.Text(CP77RPC2._handlers[i].id)
+
+                ImGui.PopID()
+            end
+        end
 
         ImGui.Separator()
 
