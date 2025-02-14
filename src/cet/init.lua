@@ -65,7 +65,7 @@ local CP77RPC2 = {
     activity = nil,
     GameStates = GameStates,
     _handlers = { },
-    _initHandlersOrder = { },
+    _initHandlersConfig = { },
     GameUtils = require("GameUtils"),
     Localization = Localization,
     RadioExt = nil
@@ -119,13 +119,19 @@ function CP77RPC2:ResetConfig()
     self.enableRadioExtIntegration = true
     self.showPlaythroughTime = false
     self.speedAsMPH = false
-    self:SortActivityHandlersBy(self._initHandlersOrder)
+
+    self:SortActivityHandlersBy(self._initHandlersConfig)
+    for i=1, #self._handlers do
+        local h = self._handlers[i]
+        h.enabled = self._initHandlersConfig[h.id].enabled
+    end
 end
 
 function CP77RPC2:SaveConfig()
     local handlers = {}
     for i=1, #self._handlers do
-        handlers[self._handlers[i].id] = { order = i }
+        local h = self._handlers[i]
+        handlers[h.id] = { order = i, enabled = h.enabled }
     end
 
     local file = io.open("data/config.json", "w")
@@ -206,6 +212,13 @@ function CP77RPC2:LoadConfig()
 
         if type(config.handlers) == "table" then
             self:SortActivityHandlersBy(config.handlers)
+            for i=1, #self._handlers do
+                local h = self._handlers[i]
+                local handlerConfig = config.handlers[h.id]
+                if type(handlerConfig) == "table" and type(handlerConfig.enabled) == "boolean" then
+                    h.enabled = handlerConfig.enabled
+                end
+            end
         end
     end)
     
@@ -228,21 +241,25 @@ end
 ---Use this method within the onTweak CET event
 ---@param handlerId string An id which UNIQUELY identifies the provided handler
 ---@param handler ActivityHandler
-function CP77RPC2:SetActivityHandler(handlerId, handler)
+---@param enabledByDefault boolean|nil
+function CP77RPC2:SetActivityHandler(handlerId, handler, enabledByDefault)
+    enabledByDefault = enabledByDefault == nil and true or (enabledByDefault and true or false)
     if self._handlers[handlerId] then
         ConsoleWarn("Handler: ", handlerId, " is being overridden.")
 
         self._handlers[handlerId] = handler
         for _, h in next, self._handlers do
             if h.id == handlerId then
+                h.enabled = enabledByDefault
                 h.handler = handler
                 break
             end
         end
+        self._initHandlersConfig[handlerId].enabled = enabledByDefault
     else
         self._handlers[handlerId] = handler
-        table.insert(self._handlers, { id = handlerId, handler = handler })
-        self._initHandlersOrder[handlerId] = #self._handlers
+        table.insert(self._handlers, { id = handlerId, enabled = enabledByDefault, handler = handler })
+        self._initHandlersConfig[handlerId] = { order = #self._handlers, enabled = enabledByDefault }
     end
 end
 
@@ -257,12 +274,11 @@ function CP77RPC2:DelActivityHandler(handlerId)
             end
         end
 
-        local removedOrder = self._initHandlersOrder[handlerId]
-        self._initHandlersOrder[handlerId] = nil
-        for k, order in next, self._initHandlersOrder do
-            if order > removedOrder then
-                -- The docs for next state that modifying is safe (adding is not)
-                self._initHandlersOrder[k] = order - 1
+        local removedOrder = self._initHandlersConfig[handlerId]
+        self._initHandlersConfig[handlerId] = nil
+        for k, handlerConfig in next, self._initHandlersConfig do
+            if handlerConfig.order > removedOrder then
+                handlerConfig.order = handlerConfig.order - 1
             end
         end
     end
@@ -438,7 +454,8 @@ local function Event_OnUpdate(dt)
 
         CP77RPC2.player = Game.GetPlayer()
         for i=#CP77RPC2._handlers, 1, -1 do
-            if CP77RPC2._handlers[i].handler(CP77RPC2, activity) then
+            local h = CP77RPC2._handlers[i]
+            if h.enabled and h.handler(CP77RPC2, activity) then
                 break
             end
         end
@@ -546,7 +563,8 @@ local function Event_OnDraw()
                 end
 
                 ImGui.SameLine()
-                ImGui.Text(CP77RPC2._handlers[i].id)
+                local h = CP77RPC2._handlers[i]
+                h.enabled = ImGui.Checkbox(h.id, h.enabled)
 
                 ImGui.PopID()
             end

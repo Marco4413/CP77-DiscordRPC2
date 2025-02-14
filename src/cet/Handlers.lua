@@ -248,9 +248,9 @@ end
 ---@param mod CP77RPC2
 function Handlers:RegisterHandlers(mod)
     mod:SetActivityHandler("DiscordRPC2.Playing",   self.Playing)
-    mod:SetActivityHandler("DiscordRPC2.Combat",    self.Combat)
-    mod:SetActivityHandler("DiscordRPC2.Driving",   self.Driving)
-    mod:SetActivityHandler("DiscordRPC2.Radio",     self.Radio)
+    mod:SetActivityHandler("DiscordRPC2.Combat",    self.Combat,  false)
+    mod:SetActivityHandler("DiscordRPC2.Driving",   self.Driving, false)
+    mod:SetActivityHandler("DiscordRPC2.Radio",     self.Radio,   false)
     mod:SetActivityHandler("DiscordRPC2.DeathMenu", self.DeathMenu)
     mod:SetActivityHandler("DiscordRPC2.PauseMenu", self.PauseMenu)
     mod:SetActivityHandler("DiscordRPC2.MainMenu",  self.MainMenu)
