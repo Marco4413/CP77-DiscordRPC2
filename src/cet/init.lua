@@ -119,12 +119,7 @@ function CP77RPC2:ResetConfig()
     self.enableRadioExtIntegration = true
     self.showPlaythroughTime = false
     self.speedAsMPH = false
-
-    self:SortActivityHandlersBy(self._initHandlersConfig)
-    for i=1, #self._handlers do
-        local h = self._handlers[i]
-        h.enabled = self._initHandlersConfig[h.id].enabled
-    end
+    self:ConfigActivityHandlers(self._initHandlersConfig)
 end
 
 function CP77RPC2:SaveConfig()
@@ -211,14 +206,7 @@ function CP77RPC2:LoadConfig()
         end
 
         if type(config.handlers) == "table" then
-            self:SortActivityHandlersBy(config.handlers)
-            for i=1, #self._handlers do
-                local h = self._handlers[i]
-                local handlerConfig = config.handlers[h.id]
-                if type(handlerConfig) == "table" and type(handlerConfig.enabled) == "boolean" then
-                    h.enabled = handlerConfig.enabled
-                end
-            end
+            self:ConfigActivityHandlers(config.handlers)
         end
     end)
     
@@ -301,6 +289,17 @@ end
 function CP77RPC2:SortActivityHandlersBy(orders)
     -- I don't really like sorting them directly, change it if it causes any issue
     table.sort(self._handlers, self:GetActivityHandlerComparator(orders))
+end
+
+function CP77RPC2:ConfigActivityHandlers(config)
+    self:SortActivityHandlersBy(config)
+    for i=1, #self._handlers do
+        local h = self._handlers[i]
+        local handlerConfig = config[h.id]
+        if type(handlerConfig) == "table" and type(handlerConfig.enabled) == "boolean" then
+            h.enabled = handlerConfig.enabled
+        end
+    end
 end
 
 ---@param handler ActivityHandler
