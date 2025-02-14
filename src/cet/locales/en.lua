@@ -73,5 +73,15 @@ return {
     ["UI.Config.ShowRadioActivity"] = "Show Radio Activity",
     ["UI.Config.EnableRadioExtIntegration"] = "Enable RadioExt Integration",
     ["UI.Config.ShowPlaythroughTime"] = "Show Playthrough Time [EXPERIMENTAL]",
-    ["UI.Config.SpeedAsMPH"] = "Speed as MPH"
+    ["UI.Config.SpeedAsMPH"] = "Speed as MPH",
+
+    ["UI.Config.Activities"] = "Activities",
+    ["UI.Config.Activities.DiscordRPC2.Playing"]   = "Playing",
+    ["UI.Config.Activities.DiscordRPC2.Combat"]    = "Combat",
+    ["UI.Config.Activities.DiscordRPC2.Driving"]   = "Driving",
+    ["UI.Config.Activities.DiscordRPC2.Radio"]     = "Radio",
+    ["UI.Config.Activities.DiscordRPC2.DeathMenu"] = "Death Menu",
+    ["UI.Config.Activities.DiscordRPC2.PauseMenu"] = "Pause Menu",
+    ["UI.Config.Activities.DiscordRPC2.MainMenu"]  = "Main Menu",
+    ["UI.Config.Activities.DiscordRPC2.Loading"]   = "Loading"
 }

@@ -536,8 +536,7 @@ local function Event_OnDraw()
         CP77RPC2.showPlaythroughTime = ImGui.Checkbox(Localization:Get("UI.Config.ShowPlaythroughTime"), CP77RPC2.showPlaythroughTime)
         CP77RPC2.speedAsMPH = ImGui.Checkbox(Localization:Get("UI.Config.SpeedAsMPH"), CP77RPC2.speedAsMPH)
 
-        -- TODO: Localization
-        if ImGui.CollapsingHeader("Activities") then
+        if ImGui.CollapsingHeader(Localization:Get("UI.Config.Activities")) then
             for i=1, #CP77RPC2._handlers do
                 ImGui.PushID(CP77RPC2._handlers[i].id)
 
@@ -564,7 +563,7 @@ local function Event_OnDraw()
 
                 ImGui.SameLine()
                 local h = CP77RPC2._handlers[i]
-                h.enabled = ImGui.Checkbox(h.id, h.enabled)
+                h.enabled = ImGui.Checkbox(Localization:Get("UI.Config.Activities." .. h.id), h.enabled)
 
                 ImGui.PopID()
             end
