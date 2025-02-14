@@ -73,12 +73,17 @@ return {
     ["UI.Config.SpeedAsMPH"] = "Speed as MPH",
 
     ["UI.Config.Activities"] = "Activities",
-    ["UI.Config.Activities.DiscordRPC2.Playing"]   = "Playing",
-    ["UI.Config.Activities.DiscordRPC2.Combat"]    = "Combat",
-    ["UI.Config.Activities.DiscordRPC2.Driving"]   = "Driving",
-    ["UI.Config.Activities.DiscordRPC2.Radio"]     = "Radio",
-    ["UI.Config.Activities.DiscordRPC2.DeathMenu"] = "Death Menu",
-    ["UI.Config.Activities.DiscordRPC2.PauseMenu"] = "Pause Menu",
-    ["UI.Config.Activities.DiscordRPC2.MainMenu"]  = "Main Menu",
-    ["UI.Config.Activities.DiscordRPC2.Loading"]   = "Loading"
+    -- In Lua [[ ]] denotes a multi-line string
+    ["UI.Config.Activities.Description"] = [[
+Pressing the checkbox will toggle the activity on or off.
+While pressing the '<' or '>' button will modify the priority of the activity. The top-most one is the one with the lowest priority (i.e. the one which will be overridden by the others if one is applied).
+]],
+    ["UI.Config.Activities.Item.DiscordRPC2.Playing"]   = "Playing",
+    ["UI.Config.Activities.Item.DiscordRPC2.Combat"]    = "Combat",
+    ["UI.Config.Activities.Item.DiscordRPC2.Driving"]   = "Driving",
+    ["UI.Config.Activities.Item.DiscordRPC2.Radio"]     = "Radio",
+    ["UI.Config.Activities.Item.DiscordRPC2.DeathMenu"] = "Death Menu",
+    ["UI.Config.Activities.Item.DiscordRPC2.PauseMenu"] = "Pause Menu",
+    ["UI.Config.Activities.Item.DiscordRPC2.MainMenu"]  = "Main Menu",
+    ["UI.Config.Activities.Item.DiscordRPC2.Loading"]   = "Loading"
 }

@@ -44,12 +44,16 @@ return {
     ["UI.Config.ShowPlaythroughTime"] = "Mostra Tempo del Salvataggio [SPERIMENTALE]",
     ["UI.Config.SpeedAsMPH"] = "Velocità in MPH",
     ["UI.Config.Activities"] = "Attività",
-    ["UI.Config.Activities.DiscordRPC2.Playing"] = "Gioco",
-    ["UI.Config.Activities.DiscordRPC2.Combat"] = "Combattimento",
-    ["UI.Config.Activities.DiscordRPC2.Driving"] = "Guida",
-    ["UI.Config.Activities.DiscordRPC2.Radio"] = "Radio",
-    ["UI.Config.Activities.DiscordRPC2.DeathMenu"] = "Menù di Morte",
-    ["UI.Config.Activities.DiscordRPC2.PauseMenu"] = "Menù di Pausa",
-    ["UI.Config.Activities.DiscordRPC2.MainMenu"] = "Menù Principale",
-    ["UI.Config.Activities.DiscordRPC2.Loading"] = "Caricamento"
+    ["UI.Config.Activities.Description"] = [[
+Premere la checkbox attiva/disattiva l'attività.
+Mentre il pulsante '<' o '>' modifica la priorità dell'attività. L'attività più in alto è quella con meno priorità (ovvero quella che verrà sovrascritta da quelle sotto se una di esse viene applicata).
+]],
+    ["UI.Config.Activities.Item.DiscordRPC2.Playing"] = "Gioco",
+    ["UI.Config.Activities.Item.DiscordRPC2.Combat"] = "Combattimento",
+    ["UI.Config.Activities.Item.DiscordRPC2.Driving"] = "Guida",
+    ["UI.Config.Activities.Item.DiscordRPC2.Radio"] = "Radio",
+    ["UI.Config.Activities.Item.DiscordRPC2.DeathMenu"] = "Menù di Morte",
+    ["UI.Config.Activities.Item.DiscordRPC2.PauseMenu"] = "Menù di Pausa",
+    ["UI.Config.Activities.Item.DiscordRPC2.MainMenu"] = "Menù Principale",
+    ["UI.Config.Activities.Item.DiscordRPC2.Loading"] = "Caricamento"
 }
