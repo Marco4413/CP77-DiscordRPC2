@@ -215,7 +215,8 @@ function CP77RPC2:SetActivityHandler(handlerId, handler, enabledByDefault)
         ConsoleWarn("Handler: ", handlerId, " is being overridden.")
 
         self._handlers[handlerId] = handler
-        for _, h in next, self._handlers do
+        for i=#self._handlers, 1, -1 do
+            local h = self._handlers[i]
             if h.id == handlerId then
                 h.enabled = enabledByDefault
                 h.handler = handler
