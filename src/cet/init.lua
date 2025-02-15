@@ -236,7 +236,7 @@ function CP77RPC2:DelActivityHandler(handlerId)
     if not self._handlers[handlerId] then return; end
     self._handlers[handlerId] = nil
     for i=#self._handlers, 1, -1 do
-        if (self._handlers[i].id == handlerId) then
+        if self._handlers[i].id == handlerId then
             table.remove(self._handlers, i)
             break
         end
