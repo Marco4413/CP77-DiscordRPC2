@@ -233,21 +233,21 @@ end
 
 ---@param handlerId string
 function CP77RPC2:DelActivityHandler(handlerId)
-    if self._handlers[handlerId] then
-        self._handlers[handlerId] = nil
-        for i=#self._handlers, 1, -1 do
-            if (self._handlers[i].id == handlerId) then
-                table.remove(self._handlers, i)
-                break
-            end
+    if not self._handlers[handlerId] then return; end
+    self._handlers[handlerId] = nil
+    for i=#self._handlers, 1, -1 do
+        if (self._handlers[i].id == handlerId) then
+            table.remove(self._handlers, i)
+            break
         end
+    end
 
-        local removedOrder = self._initHandlersConfig[handlerId]
-        self._initHandlersConfig[handlerId] = nil
-        for k, handlerConfig in next, self._initHandlersConfig do
-            if handlerConfig.order > removedOrder then
-                handlerConfig.order = handlerConfig.order - 1
-            end
+    local removedOrder = self._initHandlersConfig[handlerId].order
+    self._initHandlersConfig[handlerId] = nil
+
+    for k, handlerConfig in next, self._initHandlersConfig do
+        if handlerConfig.order > removedOrder then
+            handlerConfig.order = handlerConfig.order - 1
         end
     end
 end
