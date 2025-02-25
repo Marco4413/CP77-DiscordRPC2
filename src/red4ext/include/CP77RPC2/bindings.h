@@ -1,22 +1,21 @@
-#pragma once
-
-#ifndef _CP77RPC2_BINDINGS
-#define _CP77RPC2_BINDINGS
+#ifndef _CP77RPC2_BINDINGS_H
+#define _CP77RPC2_BINDINGS_H
 
 #include <RED4ext/RED4ext.hpp>
 
-namespace CP77RPC2
+namespace CP77RPC2::Bindings
 {
-    enum class REDDiscordActivityType
+    enum class DiscordActivityType
     {
-        Playing = 0,
+        Playing   = 0,
         Streaming = 1,
         Listening = 2,
-        Watching = 3,
+        Watching  = 3,
     };
 
-    struct REDDiscordActivity
+    struct DiscordActivity
     {
+        // TODO: Turn this into a CString if we find out that Lua (from CET) does not support 64 bit integers.
         int64_t ApplicationId = 0;
         RED4ext::CString Details = "";
         uint64_t StartTimestamp = -1;
@@ -26,7 +25,7 @@ namespace CP77RPC2
         RED4ext::CString SmallImageKey = "";
         RED4ext::CString SmallImageText = "";
         RED4ext::CString State = "";
-        REDDiscordActivityType Type = REDDiscordActivityType::Playing;
+        DiscordActivityType Type = DiscordActivityType::Playing;
         int32_t PartySize = -1;
         int32_t PartyMax = -1;
     };
@@ -51,4 +50,4 @@ namespace CP77RPC2
     void PostRegisterTypes();
 }
 
-#endif //_CP77RPC2_BINDINGS
+#endif // _CP77RPC2_BINDINGS_H

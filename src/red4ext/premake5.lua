@@ -13,8 +13,8 @@ project "cp77rpc2"
     "libs/RED4ext.SDK/include",
     "libs/discord_game_sdk/cpp",
   }
-  
-  files { "src/**.cpp", "include/**.h" }
+
+  files { "src/CP77RPC2/**.cpp", "include/CP77RPC2/**.h" }
   links "discord_game_sdk"
 
   filter "toolset:gcc"
