@@ -19,7 +19,7 @@ return {
     ["Common.SmallImageText.WPlaythroughTime"] = "{playthroughTime}h {lifepath}",
     -- Translations for life paths
     ["Common.LifePath.Nomad"] = "Nomad",
-    ["Common.LifePath.StreetKid"] = "StreetKid",
+    ["Common.LifePath.StreetKid"] = "Streetkid",
     ["Common.LifePath.Corporate"] = "Corpo",
 
     ["PauseMenu.Details"] = "Game Paused.",
