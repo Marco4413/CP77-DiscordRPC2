@@ -1,9 +1,9 @@
 #include "CP77RPC2/discordrpc.h"
 
-const std::unique_ptr<CP77RPC2::DiscordRPC>& CP77RPC2::DiscordRPC::GetInstance()
+CP77RPC2::DiscordRPC* CP77RPC2::DiscordRPC::GetInstance()
 {
     static std::unique_ptr<DiscordRPC> instance(new DiscordRPC());
-    return instance;
+    return instance.get();
 }
 
 std::unique_ptr<discord::Core> CP77RPC2::DiscordRPC::CreateCore(discord::ClientId clientId, uint64_t flags)

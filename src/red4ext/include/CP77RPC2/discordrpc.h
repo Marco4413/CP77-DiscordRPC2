@@ -35,7 +35,7 @@ namespace CP77RPC2
         bool ClearActivity();
 
     public:
-        static const std::unique_ptr<DiscordRPC>& GetInstance();
+        static DiscordRPC* GetInstance();
 
     private:
         // This class is a singleton, please use ::GetInstance() to retrieve the instance of this class.
