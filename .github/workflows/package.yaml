@@ -1,0 +1,48 @@
+name: Package
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  package:
+    runs-on: windows-latest
+
+    env:
+      PREMAKE_INSTALL_URL: https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install Dependencies
+        run: |
+          curl -Lo premake5.zip ${{ env.PREMAKE_INSTALL_URL }}
+          unzip -o ./premake5.zip
+      - name: Generate Project Files
+        run: |
+          ./premake5.exe --arch=x86_64 vs2022
+      - name: Build
+        run: |
+          VSPATH=$("$PROGRAMFILES (x86)/Microsoft Visual Studio/Installer/vswhere.exe" -latest -products \* -requires Microsoft.Component.MSBuild -property installationPath)
+          MSBUILD="$VSPATH/MSBuild/Current/Bin/msbuild.exe"
+          if [ ! -f "$MSBUILD" -o ! -x "$MSBUILD" ]; then
+            echo 'msbuild not found!'
+            exit 1;
+          fi
+          "$MSBUILD" cp77rpc2.sln -m -t:cp77rpc2 -p:Configuration=release -p:Platform=x64
+      - name: Prepare Artifact
+        run: ./package.sh
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: artifact
+          if-no-files-found: error
