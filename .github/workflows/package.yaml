@@ -28,6 +28,7 @@ jobs:
           unzip -o ./premake5.zip
       - name: Generate Project Files
         run: |
+          ./premake5.exe configure
           ./premake5.exe --arch=x86_64 vs2022
       - name: Build
         run: |
