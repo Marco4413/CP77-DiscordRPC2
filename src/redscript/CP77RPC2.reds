@@ -36,20 +36,20 @@ public native class DiscordRPC {
 
 public class CP77RPC2 extends ScriptableSystem {
     public func CreateDefaultActivity() -> DiscordActivity {
-        return new DiscordActivity(
-            /* ApplicationId  = */ 1025361016802005022l,
-            /* Details        = */ "",
-            /* StartTimestamp = */ 0ul,
-            /* EndTimestamp   = */ 0ul,
-            /* LargeImageKey  = */ "default",
-            /* LargeImageText = */ "",
-            /* SmallImageKey  = */ "",
-            /* SmallImageText = */ "",
-            /* State          = */ "",
-            /* Type           = */ DiscordActivityType.Playing,
-            /* PartySize      = */ -1,
-            /* PartyMax       = */ -1
-        );
+        let activity: DiscordActivity;
+        activity.ApplicationId  = 1025361016802005022l;
+        activity.Details        = "";
+        activity.StartTimestamp = 0ul;
+        activity.EndTimestamp   = 0ul;
+        activity.LargeImageKey  = "default";
+        activity.LargeImageText = "";
+        activity.SmallImageKey  = "";
+        activity.SmallImageText = "";
+        activity.State          = "";
+        activity.Type           = DiscordActivityType.Playing;
+        activity.PartySize      = -1;
+        activity.PartyMax       = -1;
+        return activity;
     }
 
     public func IsRunning() -> Bool {
@@ -76,5 +76,5 @@ public class CP77RPC2 extends ScriptableSystem {
         return DiscordRPC.ClearActivity();
     }
 
-    private func OnAttach() -> Void { }
+    public func OnAttach() -> Void { }
 }
