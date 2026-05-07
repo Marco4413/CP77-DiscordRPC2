@@ -49,14 +49,18 @@ int32_t CP77RPC2::DiscordRPC::GetLastRunCallbacksResult() const
 
 void CP77RPC2::DiscordRPC::Start()
 {
-    std::lock_guard lock(this->m_Mutex);
+    std::lock_guard lock(m_Mutex);
     if (m_ThreadRunning || m_Thread) return;
 
-    this->m_ThreadRunning = true;
+    m_ThreadRunning = true;
     m_Thread = std::make_unique<std::thread>([this]() {
-        while (this->m_ThreadRunning) {
+        while (true) {
             std::this_thread::sleep_for(std::chrono::seconds(1));
+
             std::lock_guard lock(this->m_Mutex);
+            if (!this->m_ThreadRunning)
+                break;
+
             if (this->m_Core) {
                 this->m_LastRunCallbacksResult = this->m_Core->RunCallbacks();
             }
@@ -66,10 +70,14 @@ void CP77RPC2::DiscordRPC::Start()
 
 void CP77RPC2::DiscordRPC::Stop()
 {
+    std::unique_lock lock(m_Mutex);
+    if (!m_ThreadRunning) return;
+
     m_ThreadRunning = false;
-    std::lock_guard lock(m_Mutex);
     if (m_Thread) {
-        m_Thread->join();
+        lock.unlock();
+            m_Thread->join();
+        lock.lock();
         m_Thread = nullptr;
     }
 }
